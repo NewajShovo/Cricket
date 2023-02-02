@@ -16,12 +16,9 @@ io.on("connection", (socket) => {
   socket.on("room:create", (data) => {
     console.log("Received 'room:create' message with data:", data);
     if (checkProbableDuplicacy(socket)) {
-      console.log("Duplicate");
-      console.log(uniquePlayer);
       io.emit("room: Duplicacy");
       return;
-    }
-    if (data.type == "stranger") {
+    } else if (data.type == "stranger") {
       console.log(socket.id);
       const index = rooms.findIndex((room) => room.vacant == true);
       if (index >= 0) {
