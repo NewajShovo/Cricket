@@ -4,11 +4,14 @@ import React, { useState } from 'react';
 const Home =() => {
     const [loading, setLoading] = useState(false);
     const handleButtonClick = (props) => {
-        setLoading(true);
-        console.log(`Button was ${props.label} clicked in App.js`);
-        setTimeout(() => {
+        console.log(props);
+        if(props.roomFree){
+            setLoading(true);
+        }
+        else{
             setLoading(false);
-        }, 3000);
+        }
+        console.log(`Button was ${props.label} clicked in App.js`);
     };
 
     return (
@@ -17,7 +20,6 @@ const Home =() => {
         <Button label="Play with Computer" onClick={handleButtonClick}/>
         <Button label="Play with Friends" onClick={handleButtonClick}/>
         <Button label="Play with Stranger" onClick={handleButtonClick} />
-        {/* {loading && <div className="loader"></div>} */}
     </div>
     );
   }

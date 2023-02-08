@@ -4,6 +4,8 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 app.use(express.static("public"));
+
+let roomFree = true;
 let rooms = [];
 let uniquePlayer = [];
 
@@ -31,11 +33,13 @@ io.on("connection", (socket) => {
           score: 0,
         };
         room.vacant = false;
+        room.roomFree = false;
         uniquePlayer.push(socket.id);
         socket.join(room.roomId);
         io.to(room.roomId).emit("room:completed", room);
       } else {
         console.log("Creating new room");
+        roomFree = false;
         const room = {
           roomId: shortID.generate(),
           players: {
@@ -46,6 +50,7 @@ io.on("connection", (socket) => {
             },
           },
           vacant: true,
+          roomFree: true,
         };
         console.log(room);
         rooms.push(room);
