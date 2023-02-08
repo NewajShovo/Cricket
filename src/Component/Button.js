@@ -9,23 +9,23 @@ const createRoom = () => {
 };
 
 class Button extends Component {
-  state = {
-    loading: false,
-  };
+  // state = {
+  //   loading: false,
+  // };
 
   handleClick = () => {
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     createRoom();
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 3000);
+    this.props.onClick(this.props);
+    // setTimeout(() => {
+    //   this.setState({ loading: false });
+    // }, 3000);
   };
 
   render() {
     return (
       <>
         <button onClick={this.handleClick}>{this.props.label}</button>
-        {this.state.loading && <div>Loading...</div>}
       </>
     );
   }
