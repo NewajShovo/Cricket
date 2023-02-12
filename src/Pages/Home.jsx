@@ -1,17 +1,21 @@
 import "../App.css";
 import Button from '../Component/Button';
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+
 const Home =() => {
     const [loading, setLoading] = useState(false);
+    const navigate= useNavigate();
     const handleButtonClick = (props) => {
-        console.log(props);
         if(props.roomFree){
             setLoading(true);
         }
         else{
             setLoading(false);
+            navigate("./Playground");
         }
-        console.log(`Button was ${props.label} clicked in App.js`);
+        console.log(`Button was ${props} clicked in App.js`);
     };
 
     return (
