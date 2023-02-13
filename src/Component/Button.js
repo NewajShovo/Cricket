@@ -14,7 +14,6 @@ class Button extends Component {
     createRoom();
     savedProp = this.props;
   };
-
   render() {
     return (
       <>
