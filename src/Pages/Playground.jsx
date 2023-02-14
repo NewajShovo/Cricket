@@ -1,5 +1,5 @@
 import "../App.css";
-import Button from '../Component/Button';
+import RunButton from "../Component/RunButton";
 const Playground =() => {
     return (
         <div className="playground-page">
@@ -14,13 +14,24 @@ const Playground =() => {
                             <label className="player-label"> Player 1</label>
                         </div>
                         <div className="player-score">
-
+                            <RunButton label = "1" id="player1-1" />
+                            <RunButton label = "2" id="player1-2" />
+                            <RunButton label = "3" id="player1-3" />
+                            <RunButton label = "4" id="player1-4" />
+                            <RunButton label = "5" id="player1-5" />
+                            <RunButton label = "6" id="player1-6" />
                         </div>
                     </div>
 
                 </div>
                 <div className="playground">
+                    <div className="above-pitch">
+
+                    </div>
                     <div className="pitch">
+
+                    </div>
+                    <div className="below-pitch">
 
                     </div>
                 </div>
@@ -28,10 +39,15 @@ const Playground =() => {
                     <div className="player-inside">
 
                         <div className="player-top">
-
+                            <label className="player-label"> Player 2</label>
                         </div>
                         <div className="player-score">
-
+                            <RunButton label = "1" id="player2-1" />
+                            <RunButton label = "2" id="player2-2" />
+                            <RunButton label = "3" id="player2-3" />
+                            <RunButton label = "4" id="player2-4" />
+                            <RunButton label = "5" id="player2-5" />
+                            <RunButton label = "6" id="player2-6" />
                         </div>
                     </div>
                 </div>
