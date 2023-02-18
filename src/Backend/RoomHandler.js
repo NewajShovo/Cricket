@@ -28,6 +28,7 @@ io.on("connection", (socket) => {
         const room = rooms[index];
         console.log(room);
         room.players[socket.id] = {
+          identity: "player2",
           option: null,
           optionLock: false,
           score: 0,
@@ -44,6 +45,7 @@ io.on("connection", (socket) => {
           roomId: shortID.generate(),
           players: {
             [socket.id]: {
+              identity: "player1",
               option: null,
               optionLock: false,
               score: 0,
@@ -59,6 +61,10 @@ io.on("connection", (socket) => {
         io.to(room.roomId).emit("room:created", room);
       }
     }
+  });
+
+  socket.on("player:move", (data) => {
+    console.log("Player:move ", data);
   });
 });
 
