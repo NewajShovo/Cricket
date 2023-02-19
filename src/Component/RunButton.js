@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { socket } from "./Socket.js";
 
-const playerMove = (value) => {
+const playerMove = (run, player) => {
   console.log("Player move");
-  socket.emit("player:move", { type: value, socketId: socket.id });
+  socket.emit("player:move", { score: run, type: player, socketId: socket.id });
 };
 
 class RunButton extends Component {
   handleClick = () => {
     console.log(`Button clicked: ${this.props.label}, id: ${this.props.id}`);
-    playerMove(this.props.id);
-    // You can access the props here and use them as needed
+    playerMove(this.props.label, this.props.id);
   };
   render() {
     return (
       <>
-        <button onClick={this.handleClick}>{this.props.label}</button>
+        <button onClick={this.handleClick} disabled={this.props.disabled}>
+          {this.props.label}
+        </button>
       </>
     );
   }
