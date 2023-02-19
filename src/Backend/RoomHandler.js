@@ -4,10 +4,10 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 app.use(express.static("public"));
-
-let roomFree = true;
 let rooms = [];
 let uniquePlayer = [];
+let player_socketMap = {};
+let players_score = {};
 
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);
@@ -21,19 +21,20 @@ io.on("connection", (socket) => {
       io.emit("room: Duplicacy");
       return;
     } else if (data.type == "stranger") {
-      console.log(socket.id);
       const index = rooms.findIndex((room) => room.vacant == true);
       if (index >= 0) {
         console.log("Found some free room");
         const room = rooms[index];
-        console.log(room);
         room.players[socket.id] = {
+          identity: "player2",
           option: null,
           optionLock: false,
           score: 0,
         };
         room.vacant = false;
         room.roomFree = false;
+        console.log(room);
+        player_socketMap[socket.id] = room.roomId;
         uniquePlayer.push(socket.id);
         socket.join(room.roomId);
         io.to(room.roomId).emit("room:completed", room);
@@ -44,6 +45,7 @@ io.on("connection", (socket) => {
           roomId: shortID.generate(),
           players: {
             [socket.id]: {
+              identity: "player1",
               option: null,
               optionLock: false,
               score: 0,
@@ -52,6 +54,7 @@ io.on("connection", (socket) => {
           vacant: true,
           roomFree: true,
         };
+        player_socketMap[socket.id] = room.roomId;
         console.log(room);
         rooms.push(room);
         socket.join(room.roomId);
@@ -59,6 +62,32 @@ io.on("connection", (socket) => {
         io.to(room.roomId).emit("room:created", room);
       }
     }
+  });
+
+  socket.on("player:move", (data) => {
+    console.log("Player:move ", data);
+    console.log(player_socketMap[data.socketId]);
+    const roomIdForPlayers = player_socketMap[data.socketId];
+    if (!players_score[roomIdForPlayers]) {
+      console.log("Creating new one");
+      players_score[roomIdForPlayers] = {
+        info: {
+          [data.socketId]: {
+            playerType: data.type,
+            playerRun: data.score,
+          },
+        },
+      };
+    } else {
+      console.log("Adding new info");
+      players_score[roomIdForPlayers].info = {
+        [data.socketId]: {
+          playerType: data.type,
+          playerRun: data.score,
+        },
+      };
+    }
+    console.log(players_score[roomIdForPlayers]);
   });
 });
 

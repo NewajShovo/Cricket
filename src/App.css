@@ -114,7 +114,7 @@ button {
 
 .player-score{
   margin: auto;
-  background-color: red;
+  /* background-color: red; */
   height: 50%;
   width: 50%;
   display: flex;
