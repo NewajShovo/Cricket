@@ -35,7 +35,7 @@ const Playground =() => {
                 </div>
                 <div className="playground">
                     <div className="above-pitch">
-
+                        <h1 id="announcement"></h1>
                     </div>
                     <div className="pitch">
 

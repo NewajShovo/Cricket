@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
     console.log(player_socketMap[data.socketId]);
     const roomIdForPlayers = player_socketMap[data.socketId];
     if (!players_score[roomIdForPlayers]) {
-      console.log("Creating new one");
+      console.log("If case");
       players_score[roomIdForPlayers] = {
         info: {
           [data.socketId]: {
@@ -79,15 +79,31 @@ io.on("connection", (socket) => {
         },
       };
     } else {
-      console.log("Adding new info");
-      players_score[roomIdForPlayers].info = {
-        [data.socketId]: {
+      if (players_score[roomIdForPlayers]["info"][data.socketId]) {
+        console.log("if inside else");
+        players_score[roomIdForPlayers] = {
+          info: {
+            [data.socketId]: {
+              playerType: data.type,
+              playerRun: data.score,
+            },
+          },
+        };
+      } else {
+        console.log("else inside else");
+        console.log(players_score[roomIdForPlayers].info);
+        players_score[roomIdForPlayers]["info"][data.socketId] = {
           playerType: data.type,
           playerRun: data.score,
-        },
-      };
+        };
+        console.log(players_score[roomIdForPlayers].info);
+        io.to(roomIdForPlayers).emit(
+          "move:completed",
+          players_score[roomIdForPlayers].info
+        );
+        delete players_score[roomIdForPlayers];
+      }
     }
-    console.log(players_score[roomIdForPlayers]);
   });
 });
 

@@ -3,7 +3,12 @@ import { socket } from "./Socket.js";
 
 const playerMove = (run, player) => {
   console.log("Player move");
-  socket.emit("player:move", { score: run, type: player, socketId: socket.id });
+  let retrievPlayerInfo = player.split("-")[0];
+  socket.emit("player:move", {
+    score: run,
+    type: retrievPlayerInfo,
+    socketId: socket.id,
+  });
 };
 
 class RunButton extends Component {
@@ -21,5 +26,9 @@ class RunButton extends Component {
     );
   }
 }
+
+socket.on("move:completed", (data) => {
+  console.log("Move completed!!!", data);
+});
 
 export default RunButton;
