@@ -1,5 +1,6 @@
 import "../App.css";
 import RunButton from "../Component/RunButton";
+import ScoreShowLabel from "../Component/ScoreShowLabel";
 import { useLocation } from 'react-router-dom';
 import { socket } from "../Component/Socket";
 const Playground =() => {
@@ -7,14 +8,17 @@ const Playground =() => {
     const { state } = location;
     console.log("Transferred value: ", state);
     console.log("Current socket id: ", socket.id);
-    // console.log("Player: ", state.players[socket.id].identity);
     const currentPlayer = state.players[socket.id].identity;
     console.log("Player: ", currentPlayer);
     return (
         <div className="playground-page">
             <div className="top-div">
-                <label id="player1Score" className="pg-label">Player1: 0/0 </label>
-                <label id="player2Score" className="pg-label">Player2: 0/0 </label>
+                <div  className="pg-label">
+                    <ScoreShowLabel label = "Player1: 0/0" id="player1Score" />
+                </div>
+                <div  className="pg-label">
+                    <ScoreShowLabel label = "Player2: 0/0" id="player2Score" />
+                </div>
             </div>
             <div className="main-playground">
                 <div className="player">

@@ -1,5 +1,6 @@
 const shortID = require("shortid");
 const express = require("express");
+const { count } = require("console");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
@@ -68,20 +69,14 @@ io.on("connection", (socket) => {
     console.log("Player:move ", data);
     console.log(player_socketMap[data.socketId]);
     const roomIdForPlayers = player_socketMap[data.socketId];
-    if (!players_score[roomIdForPlayers]) {
+    if (
+      !players_score[roomIdForPlayers] ||
+      !players_score[roomIdForPlayers]["info"]
+    ) {
       console.log("If case");
-      players_score[roomIdForPlayers] = {
-        info: {
-          [data.socketId]: {
-            playerType: data.type,
-            playerRun: data.score,
-          },
-        },
-      };
-    } else {
-      if (players_score[roomIdForPlayers]["info"][data.socketId]) {
-        console.log("if inside else");
+      if (!players_score[roomIdForPlayers]) {
         players_score[roomIdForPlayers] = {
+          count: 0,
           info: {
             [data.socketId]: {
               playerType: data.type,
@@ -90,18 +85,47 @@ io.on("connection", (socket) => {
           },
         };
       } else {
+        console.log("Cheers ", players_score[roomIdForPlayers]);
+        players_score[roomIdForPlayers]["info"] = {
+          [data.socketId]: {
+            playerType: data.type,
+            playerRun: data.score,
+          },
+        };
+        console.log("Cheered ", players_score[roomIdForPlayers]);
+      }
+    } else {
+      if (players_score[roomIdForPlayers]["info"][data.socketId]) {
+        console.log("if inside else");
+        players_score[roomIdForPlayers]["info"] = {
+          [data.socketId]: {
+            playerType: data.type,
+            playerRun: data.score,
+          },
+        };
+        console.log(players_score[roomIdForPlayers]);
+      } else {
         console.log("else inside else");
-        console.log(players_score[roomIdForPlayers].info);
+        console.log(players_score[roomIdForPlayers]);
         players_score[roomIdForPlayers]["info"][data.socketId] = {
           playerType: data.type,
           playerRun: data.score,
         };
-        console.log(players_score[roomIdForPlayers].info);
+        players_score[roomIdForPlayers].count++;
+        console.log(players_score[roomIdForPlayers]);
         io.to(roomIdForPlayers).emit(
           "move:completed",
-          players_score[roomIdForPlayers].info
+          players_score[roomIdForPlayers]
         );
-        delete players_score[roomIdForPlayers];
+        delete players_score[roomIdForPlayers].info;
+        if (players_score[roomIdForPlayers].count == 2) {
+          console.log("Game over");
+          io.to(roomIdForPlayers).emit(
+            "game:over",
+            players_score[roomIdForPlayers]
+          );
+          delete players_score[roomIdForPlayers];
+        }
       }
     }
   });

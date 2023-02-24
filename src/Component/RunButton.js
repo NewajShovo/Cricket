@@ -27,8 +27,4 @@ class RunButton extends Component {
   }
 }
 
-socket.on("move:completed", (data) => {
-  console.log("Move completed!!!", data);
-});
-
 export default RunButton;
