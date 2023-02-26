@@ -16,7 +16,9 @@ class Button extends Component {
   render() {
     return (
       <>
-        <button onClick={this.handleClick}>{this.props.label}</button>
+        <button onClick={this.handleClick} disabled={this.props.disabled}>
+          {this.props.label}
+        </button>
       </>
     );
   }

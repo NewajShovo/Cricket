@@ -9,6 +9,7 @@ let rooms = [];
 let uniquePlayer = [];
 let player_socketMap = {};
 let players_score = {};
+const numberOfOvers = 1;
 
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);
@@ -85,14 +86,12 @@ io.on("connection", (socket) => {
           },
         };
       } else {
-        console.log("Cheers ", players_score[roomIdForPlayers]);
         players_score[roomIdForPlayers]["info"] = {
           [data.socketId]: {
             playerType: data.type,
             playerRun: data.score,
           },
         };
-        console.log("Cheered ", players_score[roomIdForPlayers]);
       }
     } else {
       if (players_score[roomIdForPlayers]["info"][data.socketId]) {
@@ -118,13 +117,15 @@ io.on("connection", (socket) => {
           players_score[roomIdForPlayers]
         );
         delete players_score[roomIdForPlayers].info;
-        if (players_score[roomIdForPlayers].count == 2) {
-          console.log("Game over");
-          io.to(roomIdForPlayers).emit(
-            "game:over",
-            players_score[roomIdForPlayers]
-          );
-          delete players_score[roomIdForPlayers];
+        if (players_score[roomIdForPlayers].count == numberOfOvers * 6) {
+          setTimeout(function () {
+            console.log("Game over");
+            io.to(roomIdForPlayers).emit(
+              "game:over",
+              players_score[roomIdForPlayers]
+            );
+            delete players_score[roomIdForPlayers];
+          }, 1.5);
         }
       }
     }

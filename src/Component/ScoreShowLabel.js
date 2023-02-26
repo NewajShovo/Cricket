@@ -10,13 +10,4 @@ class ScoreShowLabel extends Component {
     );
   }
 }
-
-socket.on("move:completed", (data) => {
-  console.log("Move completed!!!", data);
-});
-
-socket.on("game:over", (data) => {
-  console.log("game:over!!", data);
-});
-
 export default ScoreShowLabel;
