@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
           players_score[roomIdForPlayers]
         );
         delete players_score[roomIdForPlayers].info;
-        if (players_score[roomIdForPlayers].count == numberOfOvers * 6) {
+        if (players_score[roomIdForPlayers].count == 3) {
           setTimeout(function () {
             console.log("Game over");
             io.to(roomIdForPlayers).emit(

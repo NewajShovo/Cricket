@@ -15,7 +15,7 @@ const Home =() => {
         else{
             setLoading(false);
             console.log("Navigate: ", props);
-            navigate("./Playground", { state: props });
+            navigate("./toss", { state: props });
         }
         console.log(`Button was ${props} clicked in App.js`);
     };

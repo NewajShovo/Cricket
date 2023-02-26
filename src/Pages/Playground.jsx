@@ -4,6 +4,7 @@ import ScoreShowLabel from "../Component/ScoreShowLabel";
 import { useLocation } from 'react-router-dom';
 import { socket } from "../Component/Socket";
 import React, { useState, useEffect } from 'react';
+import GameOverDialog from "../Component/GameOver"
 var previousPlayer1Score = {
     runs: 0, 
     wickets: 0
@@ -20,6 +21,7 @@ const Playground =() => {
     const currentPlayer = state.players[socket.id].identity;
 
 // Define state variables to hold the current scores
+const [showGameOverDialog, setShowGameOverDialog] = useState(false);
 const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
 const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
 
@@ -81,11 +83,21 @@ const handleMoveCompleted = (data) => {
 
 const handleGameOver = (data) => {
     console.log("Game Over");
-  // Update the scores based on the game data
-//   setPlayer1Score(data.players.player1.score);
-//   setPlayer2Score(data.players.player2.score);
+    setShowGameOverDialog(true);
 };
 
+
+const handleButtonClick = (props) => {
+    // if(props.roomFree){
+    //     setLoading(true);
+    // }
+    // else{
+    //     setLoading(false);
+    //     console.log("Navigate: ", props);
+    //     navigate("./Playground", { state: props });
+    // }
+    console.log(props);
+};
 
 
     useEffect(() => {
@@ -98,8 +110,16 @@ const handleGameOver = (data) => {
       }, []);
 
     return (
+
         <div className="playground-page">
-            <div className="top-div">
+
+            {showGameOverDialog && <div className="game-over-dialog-container">
+                            <div className="game-over-dialog-overlay">
+                            <GameOverDialog onClick={handleButtonClick}/>
+                            </div>
+            </div>
+            }
+                <div className="top-div">
                 <div  className="pg-label">
                     <ScoreShowLabel label={`Player1: ${player1Score.runs}/${player1Score.wickets}`}/>
                 </div>
