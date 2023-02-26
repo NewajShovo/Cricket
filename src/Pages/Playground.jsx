@@ -1,7 +1,7 @@
 import "../App.css";
 import RunButton from "../Component/RunButton";
 import ScoreShowLabel from "../Component/ScoreShowLabel";
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { socket } from "../Component/Socket";
 import React, { useState, useEffect } from 'react';
 import GameOverDialog from "../Component/GameOver"
@@ -17,6 +17,7 @@ var previousPlayer2Score = {
 
 const Playground =() => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { state } = location;
     const currentPlayer = state.players[socket.id].identity;
 
@@ -88,19 +89,36 @@ const handleGameOver = (data) => {
 
 
 const handleButtonClick = (props) => {
-    // if(props.roomFree){
-    //     setLoading(true);
-    // }
-    // else{
-    //     setLoading(false);
-    //     console.log("Navigate: ", props);
-    //     navigate("./Playground", { state: props });
-    // }
-    console.log(props);
+    if(props==="try-again"){
+        socket.emit("try-again:initiated", {
+            socketId: socket.id,
+        });
+    }
+    else{
+        socket.emit("home-page:initiated", {
+            socketId: socket.id,
+        });
+    }
 };
+
+const tryAgainCompleted = (data) =>{
+
+    const resetScore = {
+        runs: 0,
+        wickets: 0
+    };
+    setPlayer1Score(resetScore);
+    setPlayer2Score(resetScore);
+    setShowGameOverDialog(false);
+}
+const homePageCompleted = (data) =>{
+    navigate("/");
+}
 
 
     useEffect(() => {
+        socket.on("try-again:completed", tryAgainCompleted);
+        socket.on("home-page:completed", homePageCompleted);
         socket.on("move:completed", handleMoveCompleted);
         socket.on("game:over", handleGameOver);
         return () => {
@@ -115,7 +133,7 @@ const handleButtonClick = (props) => {
 
             {showGameOverDialog && <div className="game-over-dialog-container">
                             <div className="game-over-dialog-overlay">
-                            <GameOverDialog onClick={handleButtonClick}/>
+                            <GameOverDialog onButtonClicked={handleButtonClick}/>
                             </div>
             </div>
             }

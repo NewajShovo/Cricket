@@ -1,10 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-const GameOver = () => {
-  const navigate = useNavigate();
+const GameOver = (props) => {
   const handleClick = (buttonID) => {
     console.log(buttonID);
-    navigate("/");
+    if (buttonID === "home") {
+      props.onButtonClicked(buttonID);
+    } else {
+      props.onButtonClicked(buttonID);
+    }
   };
   return (
     <div className="game-over-dialog">

@@ -66,6 +66,27 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("try-again:initiated", (data) => {
+    const roomIdForPlayers = player_socketMap[data.socketId];
+    players_score[roomIdForPlayers].count = 0;
+    io.to(roomIdForPlayers).emit(
+      "try-again:completed",
+      players_score[roomIdForPlayers]
+    );
+  });
+
+  socket.on("home-page:initiated", (data) => {
+    var roomIdForPlayers;
+    if (player_socketMap[data.socketId]) {
+      roomIdForPlayers = player_socketMap[data.socketId];
+      delete player_socketMap[data.socketId];
+    }
+    io.to(roomIdForPlayers).emit(
+      "home-page:completed",
+      players_score[roomIdForPlayers]
+    );
+  });
+
   socket.on("player:move", (data) => {
     console.log("Player:move ", data);
     console.log(player_socketMap[data.socketId]);
@@ -124,7 +145,6 @@ io.on("connection", (socket) => {
               "game:over",
               players_score[roomIdForPlayers]
             );
-            delete players_score[roomIdForPlayers];
           }, 1.5);
         }
       }
