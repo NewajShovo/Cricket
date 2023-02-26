@@ -1,5 +1,6 @@
 const shortID = require("shortid");
 const express = require("express");
+const { count } = require("console");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
@@ -8,6 +9,7 @@ let rooms = [];
 let uniquePlayer = [];
 let player_socketMap = {};
 let players_score = {};
+const numberOfOvers = 1;
 
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);
@@ -64,30 +66,89 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("try-again:initiated", (data) => {
+    const roomIdForPlayers = player_socketMap[data.socketId];
+    players_score[roomIdForPlayers].count = 0;
+    io.to(roomIdForPlayers).emit(
+      "try-again:completed",
+      players_score[roomIdForPlayers]
+    );
+  });
+
+  socket.on("home-page:initiated", (data) => {
+    var roomIdForPlayers;
+    if (player_socketMap[data.socketId]) {
+      roomIdForPlayers = player_socketMap[data.socketId];
+      delete player_socketMap[data.socketId];
+    }
+    io.to(roomIdForPlayers).emit(
+      "home-page:completed",
+      players_score[roomIdForPlayers]
+    );
+  });
+
   socket.on("player:move", (data) => {
     console.log("Player:move ", data);
     console.log(player_socketMap[data.socketId]);
     const roomIdForPlayers = player_socketMap[data.socketId];
-    if (!players_score[roomIdForPlayers]) {
-      console.log("Creating new one");
-      players_score[roomIdForPlayers] = {
-        info: {
+    if (
+      !players_score[roomIdForPlayers] ||
+      !players_score[roomIdForPlayers]["info"]
+    ) {
+      console.log("If case");
+      if (!players_score[roomIdForPlayers]) {
+        players_score[roomIdForPlayers] = {
+          count: 0,
+          info: {
+            [data.socketId]: {
+              playerType: data.type,
+              playerRun: data.score,
+            },
+          },
+        };
+      } else {
+        players_score[roomIdForPlayers]["info"] = {
           [data.socketId]: {
             playerType: data.type,
             playerRun: data.score,
           },
-        },
-      };
+        };
+      }
     } else {
-      console.log("Adding new info");
-      players_score[roomIdForPlayers].info = {
-        [data.socketId]: {
+      if (players_score[roomIdForPlayers]["info"][data.socketId]) {
+        console.log("if inside else");
+        players_score[roomIdForPlayers]["info"] = {
+          [data.socketId]: {
+            playerType: data.type,
+            playerRun: data.score,
+          },
+        };
+        console.log(players_score[roomIdForPlayers]);
+      } else {
+        console.log("else inside else");
+        console.log(players_score[roomIdForPlayers]);
+        players_score[roomIdForPlayers]["info"][data.socketId] = {
           playerType: data.type,
           playerRun: data.score,
-        },
-      };
+        };
+        players_score[roomIdForPlayers].count++;
+        console.log(players_score[roomIdForPlayers]);
+        io.to(roomIdForPlayers).emit(
+          "move:completed",
+          players_score[roomIdForPlayers]
+        );
+        delete players_score[roomIdForPlayers].info;
+        if (players_score[roomIdForPlayers].count == 3) {
+          setTimeout(function () {
+            console.log("Game over");
+            io.to(roomIdForPlayers).emit(
+              "game:over",
+              players_score[roomIdForPlayers]
+            );
+          }, 1.5);
+        }
+      }
     }
-    console.log(players_score[roomIdForPlayers]);
   });
 });
 
