@@ -24,6 +24,7 @@ const Playground =() => {
     console.log( state.players[socket.id].identity);
 
     const currentSocketID = state.current_Socket_ID;
+    const player1_First_Innings = state.player1_1stInnings;
     const currentPlayer = state.players[socket.id].identity;
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
@@ -48,42 +49,84 @@ const handleMoveCompleted = (data) => {
   console.log("Player 1: ", player1_ID);
 
   console.log("Player 2: ", player2_ID);
-  if(numberOfBall<=3){
-    console.log("First Half");
-    var calculateRuns = 0, calculateWkts = 0;
-    if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
-        calculateRuns = previousPlayer1Score.runs;
-        calculateWkts = previousPlayer1Score.wickets + 1;
-    }
-    else{
-        calculateRuns = previousPlayer1Score.runs + parseInt(data['info'][player1_ID].playerRun);
-        calculateWkts = previousPlayer1Score.wickets;
-    }
-    const newScore = {
-        runs: calculateRuns,
-        wickets: calculateWkts
-      };
-      previousPlayer1Score = newScore;
-      setPlayer1Score(newScore);
+
+  if(player1_First_Innings){
+    if(numberOfBall<=6){
+        console.log("First Half");
+        var calculateRuns = 0, calculateWkts = 0;
+        if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
+            calculateRuns = previousPlayer1Score.runs;
+            calculateWkts = previousPlayer1Score.wickets + 1;
+        }
+        else{
+            calculateRuns = previousPlayer1Score.runs + parseInt(data['info'][player1_ID].playerRun);
+            calculateWkts = previousPlayer1Score.wickets;
+        }
+        const newScore = {
+            runs: calculateRuns,
+            wickets: calculateWkts
+          };
+          previousPlayer1Score = newScore;
+          setPlayer1Score(newScore);
+    
+      }else{
+        console.log("Second Half");
+        var calculateRuns = 0, calculateWkts = 0;
+        console.log("Previous: ", player2Score.runs, player2Score.wickets);
+        if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
+            calculateRuns = previousPlayer2Score.runs;
+            calculateWkts = previousPlayer2Score.wickets + 1;
+        }
+        else{
+            calculateRuns = previousPlayer2Score.runs + parseInt(data['info'][player2_ID].playerRun);
+            calculateWkts = previousPlayer2Score.wickets;
+        }
+        const newScore = {
+            runs: calculateRuns,
+            wickets: calculateWkts
+        };
+        previousPlayer2Score = newScore;
+        setPlayer2Score(newScore);
+      }
 
   }else{
-    console.log("Second Half");
-    var calculateRuns = 0, calculateWkts = 0;
-    console.log("Previous: ", player2Score.runs, player2Score.wickets);
-    if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
-        calculateRuns = previousPlayer2Score.runs;
-        calculateWkts = previousPlayer2Score.wickets + 1;
-    }
-    else{
-        calculateRuns = previousPlayer2Score.runs + parseInt(data['info'][player2_ID].playerRun);
-        calculateWkts = previousPlayer2Score.wickets;
-    }
-    const newScore = {
-        runs: calculateRuns,
-        wickets: calculateWkts
-    };
-    previousPlayer2Score = newScore;
-    setPlayer2Score(newScore);
+
+    if(numberOfBall<=6){
+        console.log("First Half");
+        var calculateRuns = 0, calculateWkts = 0;
+        console.log("Previous: ", player2Score.runs, player2Score.wickets);
+        if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
+            calculateRuns = previousPlayer2Score.runs;
+            calculateWkts = previousPlayer2Score.wickets + 1;
+        }
+        else{
+            calculateRuns = previousPlayer2Score.runs + parseInt(data['info'][player2_ID].playerRun);
+            calculateWkts = previousPlayer2Score.wickets;
+        }
+        const newScore = {
+            runs: calculateRuns,
+            wickets: calculateWkts
+        };
+        previousPlayer2Score = newScore;
+        setPlayer2Score(newScore);    
+      }else{
+        console.log("Second Half");
+        var calculateRuns = 0, calculateWkts = 0;
+        if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
+            calculateRuns = previousPlayer1Score.runs;
+            calculateWkts = previousPlayer1Score.wickets + 1;
+        }
+        else{
+            calculateRuns = previousPlayer1Score.runs + parseInt(data['info'][player1_ID].playerRun);
+            calculateWkts = previousPlayer1Score.wickets;
+        }
+        const newScore = {
+            runs: calculateRuns,
+            wickets: calculateWkts
+          };
+          previousPlayer1Score = newScore;
+          setPlayer1Score(newScore);
+      }
   }
 };
 
@@ -112,6 +155,10 @@ const tryAgainCompleted = (data) =>{
         runs: 0,
         wickets: 0
     };
+    previousPlayer1Score.runs = 0;
+    previousPlayer1Score.wickets = 0;
+    previousPlayer2Score.runs = 0;
+    previousPlayer2Score.wickets = 0;
     setPlayer1Score(resetScore);
     setPlayer2Score(resetScore);
     setShowGameOverDialog(false);

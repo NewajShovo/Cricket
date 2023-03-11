@@ -37,7 +37,7 @@ const Toss = () => {
     }, 2000);
     setTimeout(() => {
       redirectToPlayground();
-    }, 3000);
+    }, 6000);
 
   }, []);
 
@@ -54,12 +54,12 @@ const Toss = () => {
           <h1 className="word">
           { currentPlayer1
             ? currentPlayer === "player1" 
-              ? "You will bat first"
-              : "You will ball first"
+              ? "You will bat first as Player1"
+              : "You will ball first as Player2"
             : 
               currentPlayer === "player1" 
-              ? "You will ball first" 
-              : "You will bat first"
+              ? "You will ball first as Player1" 
+              : "You will bat first as Player2"
           }
         </h1>
         )}
