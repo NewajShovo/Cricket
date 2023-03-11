@@ -14,21 +14,26 @@ var previousPlayer2Score = {
     wickets: 0
 };
 
-
 const Playground =() => {
     const location = useLocation();
     const navigate = useNavigate();
     const { state } = location;
-    const currentPlayer = state.players[socket.id].identity;
+    console.log(state);
+    //  state.players[socket.id].identity;
+    console.log("HERE: ",state.players);
+    console.log( state.players[socket.id].identity);
 
-// Define state variables to hold the current scores
-const [showGameOverDialog, setShowGameOverDialog] = useState(false);
-const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
-const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
+    const currentSocketID = state.current_Socket_ID;
+    const currentPlayer = state.players[socket.id].identity;
+    const [showGameOverDialog, setShowGameOverDialog] = useState(false);
+    const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
+    const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
 
 // Define functions to update the scores based on socket events
 const handleMoveCompleted = (data) => {
   // Update the scores based on the game data
+  console.log("COmpletedddddd!!!!!");
+  console.log(data);
   const numberOfBall = data.count;
   console.log(numberOfBall);
   var keyValues = Object.keys(data.info);
@@ -152,12 +157,12 @@ const homePageCompleted = (data) =>{
                             <label className="player-label"> Player 1</label>
                         </div>
                         <div className="player-score">
-                            <RunButton label = "1" id="player1-btn1" disabled= {currentPlayer === "player2" ? true : false}/>
-                            <RunButton label = "2" id="player1-btn2" disabled= {currentPlayer === "player2" ? true : false} />
-                            <RunButton label = "3" id="player1-btn3" disabled= {currentPlayer === "player2" ? true : false} />
-                            <RunButton label = "4" id="player1-btn4" disabled= {currentPlayer === "player2" ? true : false} />
-                            <RunButton label = "5" id="player1-btn5" disabled= {currentPlayer === "player2" ? true : false} />
-                            <RunButton label = "6" id="player1-btn6" disabled= {currentPlayer === "player2" ? true : false} />
+                            <RunButton label = "1" id="player1-btn1" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false}/>
+                            <RunButton label = "2" id="player1-btn2" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false} />
+                            <RunButton label = "3" id="player1-btn3" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false} />
+                            <RunButton label = "4" id="player1-btn4" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false} />
+                            <RunButton label = "5" id="player1-btn5" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false} />
+                            <RunButton label = "6" id="player1-btn6" socketID = {currentSocketID} disabled= {currentPlayer === "player2" ? true : false} />
                         </div>
                     </div>
 
@@ -180,12 +185,12 @@ const homePageCompleted = (data) =>{
                             <label className="player-label"> Player 2</label>
                         </div>
                         <div className="player-score">
-                            <RunButton label = "1" id="player2-btn1" disabled= {currentPlayer === "player1" ? true : false} />
-                            <RunButton label = "2" id="player2-btn2" disabled= {currentPlayer === "player1" ? true : false} />
-                            <RunButton label = "3" id="player2-btn3" disabled= {currentPlayer === "player1" ? true : false} />
-                            <RunButton label = "4" id="player2-btn4" disabled= {currentPlayer === "player1" ? true : false} />
-                            <RunButton label = "5" id="player2-btn5" disabled= {currentPlayer === "player1" ? true : false} />
-                            <RunButton label = "6" id="player2-btn6" disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "1" id="player2-btn1" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "2" id="player2-btn2" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "3" id="player2-btn3" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "4" id="player2-btn4" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "5" id="player2-btn5" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
+                            <RunButton label = "6" id="player2-btn6" socketID = {currentSocketID} disabled= {currentPlayer === "player1" ? true : false} />
                         </div>
                     </div>
                 </div>

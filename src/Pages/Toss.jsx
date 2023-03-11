@@ -21,11 +21,13 @@ const Toss = () => {
   }
 
   const redirectToPlayground=()=>{
-    const props = { 
-      player1_1stInnings: currentPlayer1
+    const props = {
+      players:  state.players,
+      player1_1stInnings: currentPlayer1,
+      current_Socket_ID: socket.id
     };
-    const urlSearchParams = new URLSearchParams(props);
-    window.location.href = `http://localhost:3001/Playground?${urlSearchParams.toString()}`;
+
+    navigate("./Playground", { state: props });
   }
 
   useEffect(() => {
@@ -59,7 +61,6 @@ const Toss = () => {
               ? "You will ball first" 
               : "You will bat first"
           }
-          <Link to="/Playground">Go to Playground</Link>
         </h1>
         )}
           </div>

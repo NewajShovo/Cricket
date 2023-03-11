@@ -133,6 +133,7 @@ io.on("connection", (socket) => {
         };
         players_score[roomIdForPlayers].count++;
         console.log(players_score[roomIdForPlayers]);
+        console.log("Move Completed!!!!");
         io.to(roomIdForPlayers).emit(
           "move:completed",
           players_score[roomIdForPlayers]
