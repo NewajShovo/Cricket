@@ -1,20 +1,23 @@
-# Specify the base image
+# Use the official Node.js runtime as a parent image
 FROM node:16-alpine
 
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
+# Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code to the container
-COPY . .
+# Copy the server code to the container
+COPY Backend/ ./
 
-# Expose port 3000 (change to your server's port if necessary)
+# Copy the client code to the container
+COPY build/ ./build/
+
+# Expose port 3000 for the server
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "Backend/RoomHandler.js"]
+CMD [ "node", "RoomHandler.js" ]
