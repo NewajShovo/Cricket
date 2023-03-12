@@ -10,8 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the server code to the container
-COPY Backend/ ./
+# # Copy the server code to the container
+# COPY Backend/ ./
 
 # Copy the client code to the container
 COPY build/ ./build/
@@ -20,4 +20,5 @@ COPY build/ ./build/
 EXPOSE 3000
 
 # Start the server
-CMD [ "node", "RoomHandler.js" ]
+# CMD [ "node", "RoomHandler.js" ]
+CMD [ "npm", "start" ]
