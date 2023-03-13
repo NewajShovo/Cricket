@@ -10,11 +10,12 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the client code to the container
-COPY build/ ./build/
+# COPY Backend code to the container
+COPY Backend/ ./
 
 # Expose port 3000 for the server
 EXPOSE 3000
 
 # Start the app in development mode
-CMD [ "npm", "start" ]
+CMD [ "node", "RoomHandler.js" ]
+
