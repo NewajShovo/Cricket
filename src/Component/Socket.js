@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-export const socket = io("https://hand-crick.up.railway.app", {
+export const socket = io("https://cricketserver.onrender.com", {
   transports: ["websocket"],
 });
 socket.on("connect", () => {
