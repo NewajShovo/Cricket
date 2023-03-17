@@ -49,6 +49,7 @@ const handleMoveCompleted = (data) => {
   console.log("Player 1: ", player1_ID);
 
   console.log("Player 2: ", player2_ID);
+  console.log("Toss Result: ", player1_First_Innings);
 
   if(player1_First_Innings){
     if(numberOfBall<=6){

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Hand-Crick",
+  "name": "Websocket based Hand cricket",
   "icons": [
     {
       "src": "favicon.ico",
