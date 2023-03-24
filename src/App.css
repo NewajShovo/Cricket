@@ -80,7 +80,7 @@ button {
 
 
 .player{
-  width: 33%;
+  width: 15%;
   height: 100%;
   background-color: lightblue;
   display: flex;
@@ -99,13 +99,14 @@ button {
 }
 
 .player-label{
-  background-color: pink;
+  /* background-color: pink; */
 }
 
 .player-top{
   margin: auto;
-  height: 50%;
-  width: 50%;
+  height:40px;
+  width: 15%;
+  border-radius: 5px;
   background-color: green;
   display: flex;
   justify-content: center;
@@ -114,17 +115,17 @@ button {
 
 .player-score{
   margin: auto;
-  /* background-color: red; */
   height: 50%;
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction:row;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
 .playground{
-  width: 34%;
+  width: 70%;
   height: 100%;
   background-color: orange;
   display: flex;
@@ -135,22 +136,25 @@ button {
 
 .above-pitch{
   width: 70%;
-  height: 32.5%;
+  height: 20%;
   background-color: lightgray;
 }
 
 .pitch{
   width: 70%;
-  height: 35%;
+  height: 50%;
   background-color: lightgray;
   border-radius: 140px;
 
 }
 
 .below-pitch{
-  width: 70%;
-  height: 32.5%;
+  width: 100%;
+  height: 30%;
   background-color: lightgray;
+  /* border-color: #3498db; */
+  border-width: 5px;
+  border-color: #3498db !important;
 }
 
 .pg-label{

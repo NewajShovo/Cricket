@@ -5,7 +5,7 @@ import { socket } from "../Component/Socket";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 const Toss = () => {
-  const [currentPlayer1, setcurrentPlayer1] = useState(false);
+  const [player1Status, setplayer1Status] = useState(true);
   const location = useLocation();
   const navigate= useNavigate();
   const { state } = location;
@@ -15,15 +15,17 @@ const Toss = () => {
   const makeToss =() => {
     const tossResult = Math.floor(Math.random() * 10) + 1;
     console.log(tossResult);
-    if(tossResult%2===1) setcurrentPlayer1(true);
-    else setcurrentPlayer1(false);
-    console.log(currentPlayer1,currentPlayer);
+    if(tossResult%2===1)  setplayer1Status(true);
+    else setplayer1Status(false);
+    console.log(player1Status,currentPlayer);
   }
+
+
 
   const redirectToPlayground=()=>{
     const props = {
       players:  state.players,
-      player1_1stInnings: currentPlayer1,
+      player1_1stInnings: player1Status,
       current_Socket_ID: socket.id
     };
 
@@ -39,7 +41,7 @@ const Toss = () => {
       redirectToPlayground();
     }, 6000);
 
-  }, []);
+  }, [player1Status]);
 
   return (
     <div className="toss-page">
@@ -52,7 +54,7 @@ const Toss = () => {
         ) : (
 
           <h1 className="word">
-          { currentPlayer1
+          { player1Status
             ? currentPlayer === "player1" 
               ? "You will bat first as Player1"
               : "You will ball first as Player2"
