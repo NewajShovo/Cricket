@@ -8,6 +8,7 @@ socket.on("connect", () => {
 });
 
 socket.on("connect_error", (error) => {
+  console.log(process.env.WEB_SERVICE);
   console.error("Failed to connect to server:", error);
 });
 
