@@ -221,8 +221,13 @@ const homePageCompleted = (data) =>{
                     <div className="below-pitch">
                     {currentPlayer === 'player2' ? null: 
                         <div className="player1-Score">
-                            <div className="player-top">
-                                <label className="player-label"> Player 1</label>
+                            <div className="player1-Score-top-section">
+                                <div className="player-timer">
+                                    <div className="spinner"></div>
+                                </div>
+                                <div className="player-top">
+                                    <label className="player-label"> Player 1</label>
+                                </div>
                             </div>
                             <div className="player-score">
                                 <RunButton label = "1" id="player1-btn1" socketID = {currentSocketID} disabled= {false}/>
@@ -236,8 +241,13 @@ const homePageCompleted = (data) =>{
                     }
                     {currentPlayer === "player1" ? null: 
                       <div className="player2-Score" >
-                            <div className="player-top">
-                                <label className="player-label"> Player 2</label>
+                            <div className="player1-Score-top-section">
+                                <div className="player-timer">
+                                    <div className="spinner"></div>
+                                </div>
+                                <div className="player-top">
+                                    <label className="player-label"> Player 1</label>
+                                </div>
                             </div>
                             <div className="player-score">
                                 <RunButton label = "1" id="player2-btn1" socketID = {currentSocketID} disabled= { false} />

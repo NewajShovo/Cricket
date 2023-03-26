@@ -100,10 +100,10 @@ button {
 
 .player-label{
   /* background-color: pink; */
+  text-align: center;
 }
 
 .player-top{
-  margin: auto;
   height:40px;
   width: 15%;
   border-radius: 5px;
@@ -155,6 +155,42 @@ button {
   /* border-color: #3498db; */
   border-width: 5px;
   border-color: #3498db !important;
+}
+
+.player-timer {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 5px solid green;
+}
+
+.player-timer .spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-top-color: #007bff;
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+.player1-Score-top-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: lightpink; */
 }
 
 .pg-label{
