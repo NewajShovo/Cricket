@@ -5,6 +5,7 @@ export const socket = io(process.env.REACT_APP_WEB_SERVICE, {
 
 socket.on("connect", () => {
   console.log("Socket connected");
+  alert("Socket connected");
 });
 
 socket.on("connect_error", (error) => {
@@ -14,4 +15,5 @@ socket.on("connect_error", (error) => {
 
 socket.on("disconnect", () => {
   console.warn("Disconnected from server.");
+  alert("Disconnected from server");
 });
