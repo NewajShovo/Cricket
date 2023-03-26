@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import "../Toss.css";
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { socket } from "../Component/Socket";

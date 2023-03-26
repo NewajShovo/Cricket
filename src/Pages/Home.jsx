@@ -1,4 +1,4 @@
-import "../App.css";
+import "../Home.css";
 import logo from "../logo.svg";
 import Button from '../Component/Button';
 import React, { useState } from 'react';

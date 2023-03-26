@@ -216,6 +216,12 @@ const homePageCompleted = (data) =>{
                         </ul>
                     </div>
                     <div className="pitch">
+                        <div className="player1-move">
+                            <label className="pitch-text"> Your turn!!!</label>
+                        </div>
+                        <div className="player2-move">
+                            <label className="pitch-text"> Opponents turn!!!</label>
+                        </div>
 
                     </div>
                     <div className="below-pitch">
