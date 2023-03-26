@@ -133,12 +133,13 @@ io.on("connection", (socket) => {
         };
         players_score[roomIdForPlayers].count++;
         console.log(players_score[roomIdForPlayers]);
+        console.log("Move Completed!!!!");
         io.to(roomIdForPlayers).emit(
           "move:completed",
           players_score[roomIdForPlayers]
         );
         delete players_score[roomIdForPlayers].info;
-        if (players_score[roomIdForPlayers].count == 3) {
+        if (players_score[roomIdForPlayers].count == 12) {
           setTimeout(function () {
             console.log("Game over");
             io.to(roomIdForPlayers).emit(
@@ -153,5 +154,5 @@ io.on("connection", (socket) => {
 });
 
 http.listen(3000, () => {
-  console.log("Server started on http://localhost:3000");
+  console.log("Your server is running succefully!!!!");
 });

@@ -80,7 +80,7 @@ button {
 
 
 .player{
-  width: 33%;
+  width: 15%;
   height: 100%;
   background-color: lightblue;
   display: flex;
@@ -99,13 +99,14 @@ button {
 }
 
 .player-label{
-  background-color: pink;
+  /* background-color: pink; */
+  text-align: center;
 }
 
 .player-top{
-  margin: auto;
-  height: 50%;
-  width: 50%;
+  height:40px;
+  width: 15%;
+  border-radius: 5px;
   background-color: green;
   display: flex;
   justify-content: center;
@@ -114,17 +115,17 @@ button {
 
 .player-score{
   margin: auto;
-  /* background-color: red; */
   height: 50%;
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction:row;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
 .playground{
-  width: 34%;
+  width: 70%;
   height: 100%;
   background-color: orange;
   display: flex;
@@ -135,22 +136,61 @@ button {
 
 .above-pitch{
   width: 70%;
-  height: 32.5%;
+  height: 20%;
   background-color: lightgray;
 }
 
 .pitch{
   width: 70%;
-  height: 35%;
+  height: 50%;
   background-color: lightgray;
   border-radius: 140px;
 
 }
 
 .below-pitch{
-  width: 70%;
-  height: 32.5%;
+  width: 100%;
+  height: 30%;
   background-color: lightgray;
+  /* border-color: #3498db; */
+  border-width: 5px;
+  border-color: #3498db !important;
+}
+
+.player-timer {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 5px solid green;
+}
+
+.player-timer .spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-top-color: #007bff;
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+.player1-Score-top-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: lightpink; */
 }
 
 .pg-label{
@@ -194,4 +234,87 @@ button {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.toss-page{
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toss-point{
+  width: 400px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.show-info {
+  animation: fade-in 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-animation {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+  height: 8px;
+  margin: 50px auto;
+}
+
+.progress {
+  background-color: #3498db;
+  width: 0%;
+  height: 100%;
+  border-radius: 4px;
+  animation: progress 2s ease-in-out;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.word {
+  font-size: 30px;
+  opacity: 0;
+  animation: reveal 0.5s ease-in-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
