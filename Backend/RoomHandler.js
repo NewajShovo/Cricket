@@ -87,6 +87,12 @@ io.on("connection", (socket) => {
     );
   });
 
+  socket.on("score:update", (data) => {
+    console.log("Score Update Called");
+    const roomIdForPlayers = player_socketMap[data.socketId];
+    io.to(roomIdForPlayers).emit("score:updated", data);
+  });
+
   socket.on("player:move", (data) => {
     console.log("Player:move ", data);
     console.log(player_socketMap[data.socketId]);
