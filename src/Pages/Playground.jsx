@@ -27,6 +27,13 @@ const Playground =() => {
     const player1_First_Innings = state.player1_1stInnings;
     const currentPlayer = state.players[socket.id].identity;
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
+    const [showPlayer1Move, setshowPlayer1Move] = useState("Your turn!!!");
+    const [player1StoredValue, setplayer1StoredValue] = useState(0);
+    const [player1Stopped, setplayer1Stopped] = useState(false);
+    const [player2Stopped, setplayer2Stopped] = useState(false);
+    const [showPlayer2Move, setshowPlayer2Move] = useState("Opponents turn!!!");
+    const [showFinalScore, setshowFinalScore] = useState("Opponents turn!!!");
+    const [player2StoredValue, setplayer2StoredValue] = useState(0);
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
     const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
 
@@ -172,14 +179,55 @@ const homePageCompleted = (data) =>{
     console.log("Score Updatedfasdfas",data);
     var buttonId = data.scoreID;
     var runString = data.scoreLabel;
-    buttonId = buttonId.replace(/btn[1-9]/, "label");
-    const labelElement = document.getElementById(buttonId);
-    if (labelElement) {
-      labelElement.innerText = runString;
+    buttonId = buttonId.replace(/btn[1-9]/, "move");
+    console.log(buttonId);
+    const moveDiv = document.querySelector("."+buttonId);
+    moveDiv.style.animationPlayState = "paused";
+    if(buttonId === "player1-move"){
+        setshowPlayer1Move("Player 1 move completed!!");
+        setplayer1Stopped(true);
+        setplayer1StoredValue(runString);
+        moveDiv.style.animationPlayState = "paused";
+    }else{
+        setshowPlayer2Move("Player 2 move completed!!");
+        setplayer2StoredValue(runString);
+        setplayer2Stopped(true);
+        moveDiv.style.animationPlayState = "paused";
     }
   }
   
-  
+  useEffect(() => {
+    console.log("HELLO BRO!!!", player1Stopped, player2Stopped);
+    if(player1Stopped && player2Stopped){
+        var currentDiv = document.querySelector(".player1-move");
+        currentDiv.style.display = "none";
+
+        var currentDiv = document.querySelector(".player2-move");
+        currentDiv.style.display = "none";
+
+        if(player1StoredValue===player2StoredValue){
+            setshowFinalScore("Bowler gets a wicket!!!!");
+        }else{
+            setshowFinalScore(player1StoredValue);
+        }
+        currentDiv = document.querySelector(".player3-move");
+        currentDiv.style.display = "flex"; // or any other visible display value
+
+        setTimeout(() => {
+            currentDiv.style.display = "none";
+            currentDiv = document.querySelector(".player1-move");
+            currentDiv.style.display = "flex";
+            currentDiv.style.animationPlayState = "running";
+            currentDiv = document.querySelector(".player2-move");
+            currentDiv.style.display = "flex";
+            currentDiv.style.animationPlayState = "running";
+            setplayer1Stopped(false);
+            setplayer2Stopped(false);
+          }, 2000);
+
+
+    }
+  }, [player1Stopped, player2Stopped]);
 
 
     useEffect(() => {
@@ -231,10 +279,13 @@ const homePageCompleted = (data) =>{
                     </div>
                     <div className="pitch">
                         <div className="player1-move">
-                            <label id="player1-label" className="pitch-text"> Your turn!!!</label>
+                            <label id="player1-label" className="pitch-text">{showPlayer1Move}</label>
+                        </div>
+                        <div className="player3-move">
+                            <label id="player1-label" className="pitch-text">{showFinalScore}</label>
                         </div>
                         <div className="player2-move">
-                            <label id="player2-label" className="pitch-text"> Opponents turn!!!</label>
+                            <label id="player2-label" className="pitch-text">{showPlayer2Move}</label>
                         </div>
                     </div>
                     <div className="below-pitch">

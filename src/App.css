@@ -110,6 +110,20 @@ button {
 }
 
 
+.player3-move{
+  margin-left: 20px;
+  width: 30%;
+  height: 30%;
+  background-color: firebrick;
+  border-radius: 6px;
+  border: 3px solid lightgrey;
+  position: relative;
+  /* display: flex; */
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
 .player2-move{
   margin-left: 20px;
   width: 20%;
