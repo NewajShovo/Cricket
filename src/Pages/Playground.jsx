@@ -18,20 +18,16 @@ const Playground =() => {
     const location = useLocation();
     const navigate = useNavigate();
     const { state } = location;
-    console.log(state);
-    //  state.players[socket.id].identity;
-    console.log("HERE: ",state.players);
-    console.log( state.players[socket.id].identity);
-    var value = "hide";
+    console.log("State", state);
     const currentSocketID = state.current_Socket_ID;
     const player1_First_Innings = state.player1_1stInnings;
     const currentPlayer = state.players[socket.id].identity;
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
-    const [showPlayer1Move, setshowPlayer1Move] = useState("Your turn!!!");
+    const [showPlayer1Move, setshowPlayer1Move] = useState("Player1 move pending!!!");
     const [player1StoredValue, setplayer1StoredValue] = useState(0);
     const [player1Stopped, setplayer1Stopped] = useState(false);
     const [player2Stopped, setplayer2Stopped] = useState(false);
-    const [showPlayer2Move, setshowPlayer2Move] = useState("Opponents turn!!!");
+    const [showPlayer2Move, setshowPlayer2Move] = useState("Player2 move pending!!!");
     const [showFinalScore, setshowFinalScore] = useState("Opponents turn!!!");
     const [player2StoredValue, setplayer2StoredValue] = useState(0);
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
@@ -223,6 +219,8 @@ const homePageCompleted = (data) =>{
             currentDiv.style.animationPlayState = "running";
             setplayer1Stopped(false);
             setplayer2Stopped(false);
+            setshowPlayer1Move("Player1 move pending!!!");
+            setshowPlayer1Move("Player2 move pending!!!");
           }, 2000);
 
 
@@ -263,19 +261,53 @@ const homePageCompleted = (data) =>{
             <div className="main-playground">
                 <div className="playground">
                     <div className="above-pitch">
-                        <ul>
-                            <li>
-                                {player1_First_Innings
-                                    ? (currentPlayer === "player1"
-                                         ? "You will bat first!"
-                                         : "You will ball first!")
-                                    : (currentPlayer === "player2"
-                                        ? "You will bat first!"
-                                        : "You will ball first!")
-                                }
+                        <div className="first_innings_title">
+                            <ul>
+                                <li>
+                                    {player1_First_Innings
+                                        ? (currentPlayer === "player1"
+                                            ? "You will bat first!"
+                                            : "You will ball first!")
+                                        : (currentPlayer === "player2"
+                                            ? "You will bat first!"
+                                            : "You will ball first!")
+                                    }
 
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="first_innings">
+                            <label className="score_label">1</label>
+                            <label className="score_label">2</label>
+                            <label className="score_label">3</label>
+                            <label className="score_label">4</label>
+                            <label className="score_label">5</label>
+                            <label className="score_label">6</label>
+                        </div>
+
+                        <div className="second_innings_title">
+                            <ul>
+                                <li>
+                                    {player1_First_Innings
+                                        ? (currentPlayer === "player1"
+                                            ? "You will bat first!"
+                                            : "You will ball first!")
+                                        : (currentPlayer === "player2"
+                                            ? "You will bat first!"
+                                            : "You will ball first!")
+                                    }
+
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="second_innings">
+                            <label className="score_label">1</label>
+                            <label className="score_label">2</label>
+                            <label className="score_label">3</label>
+                            <label className="score_label">4</label>
+                            <label className="score_label">5</label>
+                            <label className="score_label">6</label>
+                        </div>
                     </div>
                     <div className="pitch">
                         <div className="player1-move">
@@ -292,9 +324,6 @@ const homePageCompleted = (data) =>{
                     {currentPlayer === 'player2' ? null: 
                         <div className="player1-Score">
                             <div className="player1-Score-top-section">
-                                <div className="player-timer">
-                                    <div className="spinner"></div>
-                                </div>
                                 <div className="player-top">
                                     <label className="player-label"> Player 1</label>
                                 </div>
@@ -312,9 +341,6 @@ const homePageCompleted = (data) =>{
                     {currentPlayer === "player1" ? null: 
                       <div className="player2-Score" >
                             <div className="player1-Score-top-section">
-                                <div className="player-timer">
-                                    <div className="spinner"></div>
-                                </div>
                                 <div className="player-top">
                                     <label className="player-label"> Player 2</label>
                                 </div>

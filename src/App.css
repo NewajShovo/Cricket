@@ -94,8 +94,71 @@ button {
 .above-pitch{
   width: 95%;
   height: 20%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;  
+  justify-content: space-between;
   background-color: lightgray;
   border: 1px solid cornflowerblue;
+
+}
+.first_innings_title{
+  height: 23%;
+  width: 25%;
+  background-color: #ccc;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+.first_innings{
+  height: 25%;
+  width: 40%;
+  background-color: #ccc;
+  /* border: 1px solid #000; */
+  box-sizing: border-box;
+  margin: auto;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.score_label {
+  width: calc(100% / 8);
+  height: 100%;
+  background-color: rebeccapurple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+
+.second_innings_title{
+  height: 23%;
+  width: 25%;
+  background-color: #ccc;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+.second_innings{
+  height: 25%;
+  width: 40%;
+  background-color: #ccc;
+  /* border: 1px solid #000; */
+  box-sizing: border-box;
+  margin: auto;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .pitch{
@@ -203,16 +266,37 @@ div:hover {
   border: 5px solid green;
 }
 
-.player-timer .spinner {
-  width: 20px;
-  height: 20px;
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.progress {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: #007bff;
+}
+
+.spinner::before {
+  content: '';
+  display: block;
+  width: 30%;
+  height: 50%;
   border-radius: 50%;
-  border: 5px solid #fff;
-  border-top-color: #007bff;
-  animation: spin 5s linear infinite;
+  border: 6px solid #007bff;
+  border-top-color: red;
+  animation: spin 10s ease-in-out infinite;
 }
 
 @keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
     transform: rotate(360deg);
   }

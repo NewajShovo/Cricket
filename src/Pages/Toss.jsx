@@ -14,6 +14,7 @@ const Toss = () => {
   console.log("Herrrreee.........",currentPlayer);
   const [isLoading, setIsLoading] = useState(true);
   const makeToss =() => {
+    console.log("One Tosss");
     const tossResult = Math.floor(Math.random() * 10) + 1;
     console.log(tossResult);
     if(tossResult%2===1)  setplayer1Status(true);
@@ -24,6 +25,7 @@ const Toss = () => {
 
 
   const redirectToPlayground=()=>{
+    console.log("HERE", player1Status);
     const props = {
       players:  state.players,
       player1_1stInnings: player1Status,
@@ -42,7 +44,7 @@ const Toss = () => {
       redirectToPlayground();
     }, 6000);
 
-  }, [player1Status]);
+  }, []);
 
   return (
     <div className="toss-page">
