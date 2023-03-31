@@ -56,15 +56,26 @@ const handleMoveCompleted = (data) => {
 
   if(player1_First_Innings){
     if(numberOfBall<=6){
+
         console.log("First Half");
+        const scoreId = `1-${numberOfBall}`;
+        console.log("Scored Id: ", scoreId);
         var calculateRuns = 0, calculateWkts = 0;
         if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
             calculateRuns = previousPlayer1Score.runs;
             calculateWkts = previousPlayer1Score.wickets + 1;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = 'W';
+            }
         }
         else{
             calculateRuns = previousPlayer1Score.runs + parseInt(data['info'][player1_ID].playerRun);
             calculateWkts = previousPlayer1Score.wickets;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = data['info'][player1_ID].playerRun;
+            }
         }
         const newScore = {
             runs: calculateRuns,
@@ -74,16 +85,25 @@ const handleMoveCompleted = (data) => {
           setPlayer1Score(newScore);
     
       }else{
+        const scoreId = `2-${numberOfBall-6}`;
         console.log("Second Half");
         var calculateRuns = 0, calculateWkts = 0;
         console.log("Previous: ", player2Score.runs, player2Score.wickets);
         if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
             calculateRuns = previousPlayer2Score.runs;
             calculateWkts = previousPlayer2Score.wickets + 1;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = 'W';
+            }
         }
         else{
             calculateRuns = previousPlayer2Score.runs + parseInt(data['info'][player2_ID].playerRun);
             calculateWkts = previousPlayer2Score.wickets;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = data['info'][player2_ID].playerRun;
+            }
         }
         const newScore = {
             runs: calculateRuns,
@@ -96,16 +116,25 @@ const handleMoveCompleted = (data) => {
   }else{
 
     if(numberOfBall<=6){
+        const scoreId = `1-${numberOfBall}`;
         console.log("First Half");
         var calculateRuns = 0, calculateWkts = 0;
         console.log("Previous: ", player2Score.runs, player2Score.wickets);
         if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
             calculateRuns = previousPlayer2Score.runs;
             calculateWkts = previousPlayer2Score.wickets + 1;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = 'W';
+            }
         }
         else{
             calculateRuns = previousPlayer2Score.runs + parseInt(data['info'][player2_ID].playerRun);
             calculateWkts = previousPlayer2Score.wickets;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = data['info'][player2_ID].playerRun;
+            }
         }
         const newScore = {
             runs: calculateRuns,
@@ -115,14 +144,23 @@ const handleMoveCompleted = (data) => {
         setPlayer2Score(newScore);    
       }else{
         console.log("Second Half");
+        const scoreId = `2-${numberOfBall-6}`;
         var calculateRuns = 0, calculateWkts = 0;
         if(parseInt(data['info'][player1_ID].playerRun) === parseInt(data['info'][player2_ID].playerRun)){
             calculateRuns = previousPlayer1Score.runs;
             calculateWkts = previousPlayer1Score.wickets + 1;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = 'W';
+            }
         }
         else{
             calculateRuns = previousPlayer1Score.runs + parseInt(data['info'][player1_ID].playerRun);
             calculateWkts = previousPlayer1Score.wickets;
+            const label = document.getElementById(scoreId);
+            if (label) {
+              label.textContent = data['info'][player1_ID].playerRun;
+            }
         }
         const newScore = {
             runs: calculateRuns,
@@ -277,15 +315,16 @@ const homePageCompleted = (data) =>{
                             </ul>
                         </div>
                         <div className="first_innings">
-                            <label className="score_label">1</label>
-                            <label className="score_label">2</label>
-                            <label className="score_label">3</label>
-                            <label className="score_label">4</label>
-                            <label className="score_label">5</label>
-                            <label className="score_label">6</label>
+                            <label style={{ color: 'white' }}>First Innings:</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-1" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-2" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-3" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-4" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-5" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="1-6" className="score_label">?</label>
                         </div>
 
-                        <div className="second_innings_title">
+                        {/* <div className="second_innings_title">
                             <ul>
                                 <li>
                                     {player1_First_Innings
@@ -299,14 +338,15 @@ const homePageCompleted = (data) =>{
 
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                         <div className="second_innings">
-                            <label className="score_label">1</label>
-                            <label className="score_label">2</label>
-                            <label className="score_label">3</label>
-                            <label className="score_label">4</label>
-                            <label className="score_label">5</label>
-                            <label className="score_label">6</label>
+                            <label style={{ color: 'white' }}>Second Innings:</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-1" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-2" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-3" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-4" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-5" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white' }} id="2-6" className="score_label">?</label>
                         </div>
                     </div>
                     <div className="pitch">
