@@ -75,6 +75,15 @@ io.on("connection", (socket) => {
     );
   });
 
+  socket.on("game-over:initiated", (data) => {
+    console.log("Game over initiated....");
+    const roomIdForPlayers = player_socketMap[data.socketId];
+    io.to(roomIdForPlayers).emit(
+      "game-over:completed",
+      players_score[roomIdForPlayers]
+    );
+  });
+
   socket.on("home-page:initiated", (data) => {
     var roomIdForPlayers;
     if (player_socketMap[data.socketId]) {
@@ -145,15 +154,6 @@ io.on("connection", (socket) => {
           players_score[roomIdForPlayers]
         );
         delete players_score[roomIdForPlayers].info;
-        if (players_score[roomIdForPlayers].count == 12) {
-          setTimeout(function () {
-            console.log("Game over");
-            io.to(roomIdForPlayers).emit(
-              "game:over",
-              players_score[roomIdForPlayers]
-            );
-          }, 1.5);
-        }
       }
     }
   });

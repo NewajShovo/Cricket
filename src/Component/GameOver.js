@@ -12,6 +12,7 @@ const GameOver = (props) => {
     <div className="game-over-dialog">
       <div>
         <h2>Game Over</h2>
+        <p>{props.text}</p>
         <p>Sorry, you lost the game. Better luck next time!</p>
         <button onClick={() => handleClick("home")}>Move to Home Page</button>
         <button onClick={() => handleClick("try-again")}>Try Again</button>

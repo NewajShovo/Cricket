@@ -225,18 +225,10 @@ button {
   100% { transform: translateX(0); }
 }
 
-div:hover {
-  animation-play-state: paused;
-}
-
 .pitch-text{
   text-align: center;
   font-weight: bold;
 }
-
-
-
-
 
 .below-pitch{
   width: 100%;

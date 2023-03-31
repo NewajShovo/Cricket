@@ -30,6 +30,7 @@ const Playground =() => {
     const [showPlayer2Move, setshowPlayer2Move] = useState("Player2 move pending!!!");
     const [showFinalScore, setshowFinalScore] = useState("Opponents turn!!!");
     const [player2StoredValue, setplayer2StoredValue] = useState(0);
+    const [gameOverText, setgameOverText] = useState("");
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
     const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
 
@@ -111,6 +112,17 @@ const handleMoveCompleted = (data) => {
         };
         previousPlayer2Score = newScore;
         setPlayer2Score(newScore);
+        // console.log("Last Ball Run: ", calculateRuns, player1Score.runs);
+        if(numberOfBall===12||calculateRuns>player1Score.runs){
+            if(calculateRuns==player1Score.runs){
+                setgameOverText("Game over. You lose.");
+            }else{
+                setgameOverText("Game over. Player2 Wins the game");
+            }
+            socket.emit("game-over:initiated", {
+                socketId: socket.id,
+            });
+        }
       }
 
   }else{
@@ -168,13 +180,26 @@ const handleMoveCompleted = (data) => {
           };
           previousPlayer1Score = newScore;
           setPlayer1Score(newScore);
+          console.log(calculateRuns)
+          if(numberOfBall===12||calculateRuns>player2Score.runs){
+            if(calculateRuns==player2Score.runs){
+                setgameOverText("Game over. You lose.");
+            }else{
+                setgameOverText("Game over. Player1 Wins the game");
+            }
+            socket.emit("game-over:initiated", {
+                socketId: socket.id,
+            });
+        }
       }
   }
 };
 
 const handleGameOver = (data) => {
     console.log("Game Over");
-    setShowGameOverDialog(true);
+    setTimeout(() => {
+        setShowGameOverDialog(true);
+      }, 1000);
 };
 
 
@@ -192,6 +217,18 @@ const handleButtonClick = (props) => {
 };
 
 const tryAgainCompleted = (data) =>{
+    for (let i = 1; i <= 6; i++) {
+        let scoreId = `1-${i}`;
+        let label = document.getElementById(scoreId);
+        if (label) {
+            label.textContent = '?';
+        }
+        scoreId = `2-${i}`;
+        label = document.getElementById(scoreId);
+        if (label) {
+            label.textContent = '?';
+        }
+    }
 
     const resetScore = {
         runs: 0,
@@ -270,11 +307,11 @@ const homePageCompleted = (data) =>{
         socket.on("try-again:completed", tryAgainCompleted);
         socket.on("home-page:completed", homePageCompleted);
         socket.on("move:completed", handleMoveCompleted);
-        socket.on("game:over", handleGameOver);
+        socket.on("game-over:completed", handleGameOver);
         socket.on("score:updated", updateScore)
         return () => {
           socket.off("move:completed", handleMoveCompleted);
-          socket.off("game:over", handleGameOver);
+          socket.off("game-over:completed", handleGameOver);
         };
       }, []);
 
@@ -284,7 +321,7 @@ const homePageCompleted = (data) =>{
 
             {showGameOverDialog && <div className="game-over-dialog-container">
                             <div className="game-over-dialog-overlay">
-                            <GameOverDialog onButtonClicked={handleButtonClick}/>
+                                <GameOverDialog text="Game over. You lose." onButtonClicked={handleButtonClick} />
                             </div>
             </div>
             }
