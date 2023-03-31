@@ -113,7 +113,7 @@ const handleMoveCompleted = (data) => {
         previousPlayer2Score = newScore;
         setPlayer2Score(newScore);
         // console.log("Last Ball Run: ", calculateRuns, player1Score.runs);
-        if(numberOfBall===12||calculateRuns>player1Score.runs){
+        if(numberOfBall===12){
             if(calculateRuns==player1Score.runs){
                 setgameOverText("Game over. You lose.");
             }else{
@@ -181,7 +181,7 @@ const handleMoveCompleted = (data) => {
           previousPlayer1Score = newScore;
           setPlayer1Score(newScore);
           console.log(calculateRuns)
-          if(numberOfBall===12||calculateRuns>player2Score.runs){
+          if(numberOfBall===12){
             if(calculateRuns==player2Score.runs){
                 setgameOverText("Game over. You lose.");
             }else{
