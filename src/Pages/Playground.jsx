@@ -113,16 +113,16 @@ const handleMoveCompleted = (data) => {
         previousPlayer2Score = newScore;
         setPlayer2Score(newScore);
         // console.log("Last Ball Run: ", calculateRuns, player1Score.runs);
-        if(numberOfBall===12){
-            if(calculateRuns==player1Score.runs){
-                setgameOverText("Game over. You lose.");
-            }else{
-                setgameOverText("Game over. Player2 Wins the game");
-            }
-            socket.emit("game-over:initiated", {
-                socketId: socket.id,
-            });
-        }
+        // if(numberOfBall===12){
+        //     if(calculateRuns==player1Score.runs){
+        //         setgameOverText("Game over. You lose.");
+        //     }else{
+        //         setgameOverText("Game over. Player2 Wins the game");
+        //     }
+        //     socket.emit("game-over:initiated", {
+        //         socketId: socket.id,
+        //     });
+        // }
       }
 
   }else{
@@ -181,16 +181,16 @@ const handleMoveCompleted = (data) => {
           previousPlayer1Score = newScore;
           setPlayer1Score(newScore);
           console.log(calculateRuns)
-          if(numberOfBall===12){
-            if(calculateRuns==player2Score.runs){
-                setgameOverText("Game over. You lose.");
-            }else{
-                setgameOverText("Game over. Player1 Wins the game");
-            }
-            socket.emit("game-over:initiated", {
-                socketId: socket.id,
-            });
-        }
+        //   if(numberOfBall===12){
+        //     if(calculateRuns==player2Score.runs){
+        //         setgameOverText("Game over. You lose.");
+        //     }else{
+        //         setgameOverText("Game over. Player1 Wins the game");
+        //     }
+        //     socket.emit("game-over:initiated", {
+        //         socketId: socket.id,
+        //     });
+        // }
       }
   }
 };
