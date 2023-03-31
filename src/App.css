@@ -275,12 +275,31 @@ div:hover {
   position: relative;
 }
 
+.progress-bar {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+  height: 8px;
+  margin: 50px auto;
+}
+
 .progress {
-  position: absolute;
+  background-color: #3498db;
   width: 0%;
   height: 100%;
-  background-color: #007bff;
+  border-radius: 4px;
+  animation: progress 2s ease-in-out;
 }
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
 
 .spinner::before {
   content: '';
