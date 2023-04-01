@@ -14,148 +14,179 @@ const numberOfOvers = 1;
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);
 }
+function handleCreateRoom(socket, data) {
+  // Handle room creation logic
+  if (checkProbableDuplicacy(socket)) {
+    io.emit("room: Duplicacy");
+    return;
+  } else if (data.type == "stranger") {
+    const index = rooms.findIndex((room) => room.vacant == true);
+    if (index >= 0) {
+      console.log("Found some free room");
+      const room = rooms[index];
+      room.players[socket.id] = {
+        identity: "player2",
+        option: null,
+        optionLock: false,
+        score: 0,
+      };
+      room.vacant = false;
+      room.roomFree = false;
+      console.log(room);
+      player_socketMap[socket.id] = room.roomId;
+      uniquePlayer.push(socket.id);
+      socket.join(room.roomId);
+      io.to(room.roomId).emit("room:completed", room);
+    } else {
+      console.log("Creating new room");
+      roomFree = false;
+      const room = {
+        roomId: shortID.generate(),
+        players: {
+          [socket.id]: {
+            identity: "player1",
+            option: null,
+            optionLock: false,
+            score: 0,
+          },
+        },
+        vacant: true,
+        roomFree: true,
+      };
+      player_socketMap[socket.id] = room.roomId;
+      console.log(room);
+      rooms.push(room);
+      socket.join(room.roomId);
+      uniquePlayer.push(socket.id);
+      io.to(room.roomId).emit("room:created", room);
+    }
+  }
+}
+
+function handleTryAgain(socket, data) {
+  // Handle try-again logic
+  const roomIdForPlayers = player_socketMap[data.socketId];
+  players_score[roomIdForPlayers].count = 0;
+  io.to(roomIdForPlayers).emit(
+    "try-again:completed",
+    players_score[roomIdForPlayers]
+  );
+}
+
+function handleGameOver(socket, data) {
+  // Handle game-over logic
+  const roomIdForPlayers = player_socketMap[data.socketId];
+  io.to(roomIdForPlayers).emit(
+    "game-over:completed",
+    players_score[roomIdForPlayers]
+  );
+}
+
+function handleHomePage(socket, data) {
+  // Handle home-page logic
+  var roomIdForPlayers;
+  if (player_socketMap[data.socketId]) {
+    roomIdForPlayers = player_socketMap[data.socketId];
+    delete player_socketMap[data.socketId];
+  }
+  io.to(roomIdForPlayers).emit(
+    "home-page:completed",
+    players_score[roomIdForPlayers]
+  );
+}
+
+function handleScoreUpdate(socket, data) {
+  // Handle score update logic
+  const roomIdForPlayers = player_socketMap[data.socketId];
+  io.to(roomIdForPlayers).emit("score:updated", data);
+}
+
+function handlePlayerMove(socket, data) {
+  // Handle player move logic
+  console.log(player_socketMap[data.socketId]);
+  const roomIdForPlayers = player_socketMap[data.socketId];
+  if (
+    !players_score[roomIdForPlayers] ||
+    !players_score[roomIdForPlayers]["info"]
+  ) {
+    console.log("If case");
+    if (!players_score[roomIdForPlayers]) {
+      players_score[roomIdForPlayers] = {
+        count: 0,
+        info: {
+          [data.socketId]: {
+            playerType: data.type,
+            playerRun: data.score,
+          },
+        },
+      };
+    } else {
+      players_score[roomIdForPlayers]["info"] = {
+        [data.socketId]: {
+          playerType: data.type,
+          playerRun: data.score,
+        },
+      };
+    }
+  } else {
+    if (players_score[roomIdForPlayers]["info"][data.socketId]) {
+      console.log("if inside else");
+      players_score[roomIdForPlayers]["info"] = {
+        [data.socketId]: {
+          playerType: data.type,
+          playerRun: data.score,
+        },
+      };
+      console.log(players_score[roomIdForPlayers]);
+    } else {
+      console.log("else inside else");
+      console.log(players_score[roomIdForPlayers]);
+      players_score[roomIdForPlayers]["info"][data.socketId] = {
+        playerType: data.type,
+        playerRun: data.score,
+      };
+      players_score[roomIdForPlayers].count++;
+      console.log(players_score[roomIdForPlayers]);
+      console.log("Move Completed!!!!");
+      io.to(roomIdForPlayers).emit(
+        "move:completed",
+        players_score[roomIdForPlayers]
+      );
+      delete players_score[roomIdForPlayers].info;
+    }
+  }
+}
 
 io.on("connection", (socket) => {
   console.log("Client connected");
   socket.on("room:create", (data) => {
-    console.log("Received 'room:create' message with data:", data);
-    if (checkProbableDuplicacy(socket)) {
-      io.emit("room: Duplicacy");
-      return;
-    } else if (data.type == "stranger") {
-      const index = rooms.findIndex((room) => room.vacant == true);
-      if (index >= 0) {
-        console.log("Found some free room");
-        const room = rooms[index];
-        room.players[socket.id] = {
-          identity: "player2",
-          option: null,
-          optionLock: false,
-          score: 0,
-        };
-        room.vacant = false;
-        room.roomFree = false;
-        console.log(room);
-        player_socketMap[socket.id] = room.roomId;
-        uniquePlayer.push(socket.id);
-        socket.join(room.roomId);
-        io.to(room.roomId).emit("room:completed", room);
-      } else {
-        console.log("Creating new room");
-        roomFree = false;
-        const room = {
-          roomId: shortID.generate(),
-          players: {
-            [socket.id]: {
-              identity: "player1",
-              option: null,
-              optionLock: false,
-              score: 0,
-            },
-          },
-          vacant: true,
-          roomFree: true,
-        };
-        player_socketMap[socket.id] = room.roomId;
-        console.log(room);
-        rooms.push(room);
-        socket.join(room.roomId);
-        uniquePlayer.push(socket.id);
-        io.to(room.roomId).emit("room:created", room);
-      }
-    }
+    console.log("room:create....", data);
+    handleCreateRoom(socket, data);
   });
 
   socket.on("try-again:initiated", (data) => {
-    const roomIdForPlayers = player_socketMap[data.socketId];
-    players_score[roomIdForPlayers].count = 0;
-    io.to(roomIdForPlayers).emit(
-      "try-again:completed",
-      players_score[roomIdForPlayers]
-    );
+    console.log("try-again:initiated....", data);
+    handleTryAgain(socket, data);
   });
 
   socket.on("game-over:initiated", (data) => {
-    console.log("Game over initiated....");
-    const roomIdForPlayers = player_socketMap[data.socketId];
-    io.to(roomIdForPlayers).emit(
-      "game-over:completed",
-      players_score[roomIdForPlayers]
-    );
+    console.log("Game over initiated....", data);
+    handleGameOver(socket, data);
   });
 
   socket.on("home-page:initiated", (data) => {
-    var roomIdForPlayers;
-    if (player_socketMap[data.socketId]) {
-      roomIdForPlayers = player_socketMap[data.socketId];
-      delete player_socketMap[data.socketId];
-    }
-    io.to(roomIdForPlayers).emit(
-      "home-page:completed",
-      players_score[roomIdForPlayers]
-    );
+    console.log("home-page:initiated....", data);
+    handleHomePage(socket, data);
   });
 
   socket.on("score:update", (data) => {
-    console.log("Score Update Called");
-    const roomIdForPlayers = player_socketMap[data.socketId];
-    io.to(roomIdForPlayers).emit("score:updated", data);
+    console.log("Score Update Called", data);
+    handleScoreUpdate(socket, data);
   });
 
   socket.on("player:move", (data) => {
     console.log("Player:move ", data);
-    console.log(player_socketMap[data.socketId]);
-    const roomIdForPlayers = player_socketMap[data.socketId];
-    if (
-      !players_score[roomIdForPlayers] ||
-      !players_score[roomIdForPlayers]["info"]
-    ) {
-      console.log("If case");
-      if (!players_score[roomIdForPlayers]) {
-        players_score[roomIdForPlayers] = {
-          count: 0,
-          info: {
-            [data.socketId]: {
-              playerType: data.type,
-              playerRun: data.score,
-            },
-          },
-        };
-      } else {
-        players_score[roomIdForPlayers]["info"] = {
-          [data.socketId]: {
-            playerType: data.type,
-            playerRun: data.score,
-          },
-        };
-      }
-    } else {
-      if (players_score[roomIdForPlayers]["info"][data.socketId]) {
-        console.log("if inside else");
-        players_score[roomIdForPlayers]["info"] = {
-          [data.socketId]: {
-            playerType: data.type,
-            playerRun: data.score,
-          },
-        };
-        console.log(players_score[roomIdForPlayers]);
-      } else {
-        console.log("else inside else");
-        console.log(players_score[roomIdForPlayers]);
-        players_score[roomIdForPlayers]["info"][data.socketId] = {
-          playerType: data.type,
-          playerRun: data.score,
-        };
-        players_score[roomIdForPlayers].count++;
-        console.log(players_score[roomIdForPlayers]);
-        console.log("Move Completed!!!!");
-        io.to(roomIdForPlayers).emit(
-          "move:completed",
-          players_score[roomIdForPlayers]
-        );
-        delete players_score[roomIdForPlayers].info;
-      }
-    }
+    handlePlayerMove(socket, data);
   });
 });
 
