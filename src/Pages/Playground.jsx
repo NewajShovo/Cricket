@@ -313,7 +313,7 @@ const homePageCompleted = (data) =>{
             setplayer1Stopped(false);
             setplayer2Stopped(false);
             setshowPlayer1Move("Player1 move pending!!!");
-            setshowPlayer1Move("Player2 move pending!!!");
+            setshowPlayer2Move("Player2 move pending!!!");
           }, 2000);
 
 
@@ -359,13 +359,12 @@ const homePageCompleted = (data) =>{
                                 <li>
                                     {player1_First_Innings
                                         ? (currentPlayer === "player1"
-                                            ? "You will bat first! (player1)"
-                                            : "You will ball first! (player1)")
+                                            ? "You will bat first!"
+                                            : "You will ball first!")
                                         : (currentPlayer === "player2"
                                             ? "You will bat first!"
                                             : "You will ball first!")
                                     }
-
                                 </li>
                             </ul>
                         </div>

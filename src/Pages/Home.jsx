@@ -25,8 +25,8 @@ const Home =() => {
             <div className="button-container">
                 {loading && <div className="loader"></div>}
                 <Button label="Play with Computer" onClick={handleButtonClick} disabled={true}/>
-                <Button label="Play with Stranger" onClick={handleButtonClick} />
-                <Button label="Play with Friends" onClick={handleButtonClick} disabled={true}/>
+                <Button label="Play with Friends" onClick={handleButtonClick} />
+                <Button label="Play with Stranger" onClick={handleButtonClick} disabled={true}/>
             </div>
         </div>
 
