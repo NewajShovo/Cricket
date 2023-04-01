@@ -13,6 +13,7 @@ var previousPlayer2Score = {
     runs: 0,
     wickets: 0
 };
+var numberOfBall;
 
 const Playground =() => {
     const location = useLocation();
@@ -39,7 +40,7 @@ const handleMoveCompleted = (data) => {
   // Update the scores based on the game data
   console.log("COmpletedddddd!!!!!");
   console.log(data);
-  const numberOfBall = data.count;
+  numberOfBall = data.count;
   console.log(numberOfBall);
   var keyValues = Object.keys(data.info);
   var player1_ID, player2_ID;
@@ -57,7 +58,6 @@ const handleMoveCompleted = (data) => {
 
   if(player1_First_Innings){
     if(numberOfBall<=6){
-
         console.log("First Half");
         const scoreId = `1-${numberOfBall}`;
         console.log("Scored Id: ", scoreId);
@@ -83,9 +83,10 @@ const handleMoveCompleted = (data) => {
             wickets: calculateWkts
           };
           previousPlayer1Score = newScore;
+        //   console.log(previousPlayer1Score);
           setPlayer1Score(newScore);
-    
       }else{
+        console.log(previousPlayer1Score);
         const scoreId = `2-${numberOfBall-6}`;
         console.log("Second Half");
         var calculateRuns = 0, calculateWkts = 0;
@@ -112,17 +113,19 @@ const handleMoveCompleted = (data) => {
         };
         previousPlayer2Score = newScore;
         setPlayer2Score(newScore);
-        // console.log("Last Ball Run: ", calculateRuns, player1Score.runs);
-        // if(numberOfBall===12){
-        //     if(calculateRuns==player1Score.runs){
-        //         setgameOverText("Game over. You lose.");
-        //     }else{
-        //         setgameOverText("Game over. Player2 Wins the game");
-        //     }
-        //     socket.emit("game-over:initiated", {
-        //         socketId: socket.id,
-        //     });
-        // }
+        console.log("Last Ball Run: ", calculateRuns, previousPlayer1Score.runs);
+        if(numberOfBall===12||calculateRuns>previousPlayer1Score.runs){
+            if(calculateRuns==previousPlayer1Score.runs){
+                setgameOverText("Game over. You lose.");
+            }else if(calculateRuns>previousPlayer1Score.runs){
+                setgameOverText("Game over. Player2 Wins the game");
+            }else{
+                setgameOverText("Game over. Player2 lost the game");
+            }
+            socket.emit("game-over:initiated", {
+                socketId: socket.id,
+            });
+        }
       }
 
   }else{
@@ -181,16 +184,19 @@ const handleMoveCompleted = (data) => {
           previousPlayer1Score = newScore;
           setPlayer1Score(newScore);
           console.log(calculateRuns)
-        //   if(numberOfBall===12){
-        //     if(calculateRuns==player2Score.runs){
-        //         setgameOverText("Game over. You lose.");
-        //     }else{
-        //         setgameOverText("Game over. Player1 Wins the game");
-        //     }
-        //     socket.emit("game-over:initiated", {
-        //         socketId: socket.id,
-        //     });
-        // }
+          console.log("Last Ball Run: ", calculateRuns, previousPlayer2Score.runs);
+          if(numberOfBall===12||calculateRuns>previousPlayer2Score.runs){
+            if(calculateRuns==previousPlayer2Score.runs){
+                setgameOverText("Game over. You lose.");
+            }else if(calculateRuns>previousPlayer2Score.runs){
+                setgameOverText("Game over. Player1 Wins the game");
+            }else{
+                setgameOverText("Game over. Player1 lost the game");
+            }
+            socket.emit("game-over:initiated", {
+                socketId: socket.id,
+            });
+        }
       }
   }
 };
@@ -275,11 +281,23 @@ const homePageCompleted = (data) =>{
 
         var currentDiv = document.querySelector(".player2-move");
         currentDiv.style.display = "none";
-
+        console.log("Number of ball: ",numberOfBall);
         if(player1StoredValue===player2StoredValue){
             setshowFinalScore("Bowler gets a wicket!!!!");
         }else{
-            setshowFinalScore(player1StoredValue);
+            if(player1_First_Innings){
+                if(numberOfBall<=6){
+                    setshowFinalScore(player1StoredValue);
+                }else{
+                    setshowFinalScore(player2StoredValue);
+                }
+            }else{
+                if(numberOfBall<=6){
+                    setshowFinalScore(player2StoredValue);
+                }else{
+                    setshowFinalScore(player1StoredValue);
+                }
+            }
         }
         currentDiv = document.querySelector(".player3-move");
         currentDiv.style.display = "flex"; // or any other visible display value
@@ -341,8 +359,8 @@ const homePageCompleted = (data) =>{
                                 <li>
                                     {player1_First_Innings
                                         ? (currentPlayer === "player1"
-                                            ? "You will bat first!"
-                                            : "You will ball first!")
+                                            ? "You will bat first! (player1)"
+                                            : "You will ball first! (player1)")
                                         : (currentPlayer === "player2"
                                             ? "You will bat first!"
                                             : "You will ball first!")
@@ -361,21 +379,6 @@ const homePageCompleted = (data) =>{
                             <label style={{ backgroundColor: 'white' }} id="1-6" className="score_label">?</label>
                         </div>
 
-                        {/* <div className="second_innings_title">
-                            <ul>
-                                <li>
-                                    {player1_First_Innings
-                                        ? (currentPlayer === "player1"
-                                            ? "You will bat first!"
-                                            : "You will ball first!")
-                                        : (currentPlayer === "player2"
-                                            ? "You will bat first!"
-                                            : "You will ball first!")
-                                    }
-
-                                </li>
-                            </ul>
-                        </div> */}
                         <div className="second_innings">
                             <label style={{ color: 'white' }}>Second Innings:</label>
                             <label style={{ backgroundColor: 'white' }} id="2-1" className="score_label">?</label>
