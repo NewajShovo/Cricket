@@ -39,7 +39,7 @@ const Home =() => {
                     <Button label="Play with Stranger" onClick={handleButtonClick} disabled={true}/>
                 </div>
             ) : (
-                <div className="button-container" style={{ color: 'red' }}>Connecting to server...</div>
+                <div className="button-container" style={{ color: 'red' }}><b>Connecting to server...</b></div>
             )}
         </div>
 
