@@ -104,9 +104,9 @@ button {
 }
 .first_innings_title{
   height: 23%;
-  width: 35%;
-  background-color: #ccc;
-  border: 1px solid #000;
+  width: 60%;
+  background-color: transparent;
+  border: 1px solid transparent;
   box-sizing: border-box;
   margin: auto;
   display: flex;
@@ -163,7 +163,7 @@ button {
 }
 
 .pitch{
-  width: 70%;
+  width: 85%;
   height: 50%;
   background-color: lightgray;
   border-radius: 140px;
