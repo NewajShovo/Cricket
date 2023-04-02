@@ -36,6 +36,10 @@ const Playground =() => {
     const [player2RunButtonDisable, setplayer2RunButtonDisable] = useState(false);
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
     const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
+    const [current_info, setcurrent_info] = useState("");
+
+
+
 
 // Define functions to update the scores based on socket events
 const handleMoveCompleted = (data) => {
@@ -271,7 +275,6 @@ const homePageCompleted = (data) =>{
     buttonId = buttonId.replace(/btn[1-9]/, "move");
     console.log(buttonId);
     const moveDiv = document.querySelector("."+buttonId);
-    moveDiv.style.animationPlayState = "paused";
     if(buttonId === "player1-move"){
         setshowPlayer1Move("Player 1 move completed!!");
         setplayer1Stopped(true);
@@ -311,6 +314,9 @@ const homePageCompleted = (data) =>{
                 }
             }
         }
+
+
+
         currentDiv = document.querySelector(".player3-move");
         currentDiv.style.display = "flex"; // or any other visible display value
 
@@ -328,12 +334,41 @@ const homePageCompleted = (data) =>{
             setshowPlayer2Move("Player2 move pending!!!");
             setplayer1RunButtonDisable(false);
             setplayer2RunButtonDisable(false);
+            if(numberOfBall==6){
+                if(player1_First_Innings){
+                    if(currentPlayer === "player1"){
+                        setcurrent_info("Now you are bowling.")
+                    }else{
+                        setcurrent_info("Now you are batting.")
+                    }
+                }else{
+                    if(currentPlayer === "player2"){
+                        setcurrent_info("Now you are bowling.")
+                    }else{
+                        setcurrent_info("Now you are batting.")
+                    }
+                }
+            }
           }, 2000);
     }
   }, [player1Stopped, player2Stopped]);
 
 
     useEffect(() => {
+        if(player1_First_Innings){
+            if(currentPlayer === "player1"){
+                setcurrent_info("Now you are batting.")
+            }else{
+                setcurrent_info("Now you are bowling.")
+            }
+        }else{
+            if(currentPlayer === "player2"){
+                setcurrent_info("Now you are batting.")
+            }else{
+                setcurrent_info("Now you are bowling.")
+            }
+        }
+
         socket.on("try-again:completed", tryAgainCompleted);
         socket.on("home-page:completed", homePageCompleted);
         socket.on("move:completed", handleMoveCompleted);
@@ -369,14 +404,7 @@ const homePageCompleted = (data) =>{
                         <div className="first_innings_title">
                             <ul>
                                 <li>
-                                    {player1_First_Innings
-                                        ? (currentPlayer === "player1"
-                                            ? "You will bat first!"
-                                            : "You will ball first!")
-                                        : (currentPlayer === "player2"
-                                            ? "You will bat first!"
-                                            : "You will ball first!")
-                                    }
+                                    {current_info}
                                 </li>
                             </ul>
                         </div>
