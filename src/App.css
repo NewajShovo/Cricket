@@ -84,7 +84,7 @@ button {
 .playground{
   width: 70%;
   height: 100%;
-  background-color: orange;
+  background-color: green;
   display: flex;
   flex-direction: column;
   justify-content: center;
