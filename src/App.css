@@ -176,7 +176,7 @@ button {
 
 .player3-move{
   margin-left: 20px;
-  width: 35%;
+  width: 38%;
   height: 35%;
   background-color: firebrick;
   border-radius: 6px;
@@ -190,7 +190,7 @@ button {
 
 .player2-move{
   margin-left: 30px;
-  width: 35%;
+  width: 38%;
   height: 25%;
   background-color: firebrick;
   border-radius: 6px;
@@ -204,7 +204,7 @@ button {
 }
 
 .player1-move {
-  width: 35%;
+  width: 38%;
   height: 25%;
   background-color: firebrick;
   border-radius: 6px;
