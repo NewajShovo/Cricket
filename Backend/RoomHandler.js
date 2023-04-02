@@ -1,6 +1,5 @@
 const shortID = require("shortid");
 const express = require("express");
-const { count } = require("console");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
@@ -9,7 +8,6 @@ let rooms = [];
 let uniquePlayer = [];
 let player_socketMap = {};
 let players_score = {};
-const numberOfOvers = 1;
 
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);

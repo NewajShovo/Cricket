@@ -32,6 +32,8 @@ const Playground =() => {
     const [showFinalScore, setshowFinalScore] = useState("Opponents turn!!!");
     const [player2StoredValue, setplayer2StoredValue] = useState(0);
     const [gameOverText, setgameOverText] = useState("");
+    const [player1RunButtonDisable, setplayer1RunButtonDisable] = useState(false);
+    const [player2RunButtonDisable, setplayer2RunButtonDisable] = useState(false);
     const [player1Score, setPlayer1Score] = useState({ runs: 0, wickets: 0 });
     const [player2Score, setPlayer2Score] = useState({ runs: 0, wickets: 0 });
 
@@ -201,6 +203,16 @@ const handleMoveCompleted = (data) => {
   }
 };
 
+const handleRunClick = (data) => {
+    const btnId = data.id;
+    const player = btnId.split("-")[0]; // extracts "player1"
+    if(player==="player1"){
+        setplayer1RunButtonDisable(true);
+    }else{
+        setplayer2RunButtonDisable(true);
+    }
+  };
+
 const handleGameOver = (data) => {
     console.log("Game Over");
     setTimeout(() => {
@@ -314,9 +326,9 @@ const homePageCompleted = (data) =>{
             setplayer2Stopped(false);
             setshowPlayer1Move("Player1 move pending!!!");
             setshowPlayer2Move("Player2 move pending!!!");
+            setplayer1RunButtonDisable(false);
+            setplayer2RunButtonDisable(false);
           }, 2000);
-
-
     }
   }, [player1Stopped, player2Stopped]);
 
@@ -408,12 +420,12 @@ const homePageCompleted = (data) =>{
                                 </div>
                             </div>
                             <div className="player-score">
-                                <RunButton label = "1" id="player1-btn1" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "2" id="player1-btn2" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "3" id="player1-btn3" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "4" id="player1-btn4" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "5" id="player1-btn5" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "6" id="player1-btn6" socketID = {currentSocketID} disabled= {false}/>
+                                <RunButton label = "1" id="player1-btn1" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "2" id="player1-btn2" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "3" id="player1-btn3" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "4" id="player1-btn4" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "5" id="player1-btn5" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "6" id="player1-btn6" socketID = {currentSocketID} disabled= {player1RunButtonDisable} onClick={handleRunClick}/>
                             </div>
                         </div>  
                     }
@@ -425,12 +437,12 @@ const homePageCompleted = (data) =>{
                                 </div>
                             </div>
                             <div className="player-score">
-                                <RunButton label = "1" id="player2-btn1" socketID = {currentSocketID} disabled= { false}/>
-                                <RunButton label = "2" id="player2-btn2" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "3" id="player2-btn3" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "4" id="player2-btn4" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "5" id="player2-btn5" socketID = {currentSocketID} disabled= {false}/>
-                                <RunButton label = "6" id="player2-btn6" socketID = {currentSocketID} disabled= {false}/>
+                                <RunButton label = "1" id="player2-btn1" socketID = {currentSocketID} disabled= { player2RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "2" id="player2-btn2" socketID = {currentSocketID} disabled= {player2RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "3" id="player2-btn3" socketID = {currentSocketID} disabled= {player2RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "4" id="player2-btn4" socketID = {currentSocketID} disabled= {player2RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "5" id="player2-btn5" socketID = {currentSocketID} disabled= {player2RunButtonDisable} onClick={handleRunClick}/>
+                                <RunButton label = "6" id="player2-btn6" socketID = {currentSocketID} disabled= {player2RunButtonDisable} onClick={handleRunClick}/>
                             </div>
                       </div>   
                     }

@@ -20,6 +20,7 @@ class RunButton extends Component {
   handleClick = () => {
     console.log(`Button clicked: ${this.props.label}, id: ${this.props.id}`);
     savedProp = this.props;
+    savedProp.onClick(this.props);
     playerMove(this.props.label, this.props.id, this.props.socketID);
   };
   render() {
