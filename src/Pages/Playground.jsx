@@ -1,10 +1,11 @@
 import "../App.css";
 import RunButton from "../Component/RunButton";
 import ScoreShowLabel from "../Component/ScoreShowLabel";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import { socket } from "../Component/Socket";
 import React, { useState, useEffect } from 'react';
 import GameOverDialog from "../Component/GameOver"
+import InningsBreakDialog from "../Component/InningsBreak"
 var previousPlayer1Score = {
     runs: 0, 
     wickets: 0
@@ -24,6 +25,7 @@ const Playground =() => {
     const player1_First_Innings = state.player1_1stInnings;
     const currentPlayer = state.players[socket.id].identity;
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
+    const [showInningsBreak, setshowInningsBreak] = useState(false);
     const [showPlayer1Move, setshowPlayer1Move] = useState("Player1 move pending!!!");
     const [player1StoredValue, setplayer1StoredValue] = useState(0);
     const [player1Stopped, setplayer1Stopped] = useState(false);
@@ -227,6 +229,7 @@ const handleGameOver = (data) => {
 
 const handleButtonClick = (props) => {
     if(props==="try-again"){
+
         socket.emit("try-again:initiated", {
             socketId: socket.id,
         });
@@ -263,6 +266,13 @@ const tryAgainCompleted = (data) =>{
     setPlayer1Score(resetScore);
     setPlayer2Score(resetScore);
     setShowGameOverDialog(false);
+    if(player1_First_Innings){
+        if(currentPlayer === "player1"){
+            setcurrent_info("Now you are batting")
+        }else{
+            setcurrent_info("Now you are bowling.")
+        }
+    }
 }
 const homePageCompleted = (data) =>{
     navigate("/");
@@ -334,22 +344,27 @@ const homePageCompleted = (data) =>{
             setshowPlayer2Move("Player2 move pending!!!");
             setplayer1RunButtonDisable(false);
             setplayer2RunButtonDisable(false);
-            if(numberOfBall==6){
-                if(player1_First_Innings){
-                    if(currentPlayer === "player1"){
-                        setcurrent_info("Now you are bowling.")
-                    }else{
-                        setcurrent_info("Now you are batting.")
-                    }
-                }else{
-                    if(currentPlayer === "player2"){
-                        setcurrent_info("Now you are bowling.")
-                    }else{
-                        setcurrent_info("Now you are batting.")
-                    }
+            if(numberOfBall == 6) {
+                setshowInningsBreak(true);
+                if(player1_First_Innings) {
+                  if(currentPlayer === "player1") {
+                    setcurrent_info("Now you are bowling.")
+                  } else {
+                    setcurrent_info("Now you are batting.")
+                  }
+                } else {
+                  if(currentPlayer === "player2") {
+                    setcurrent_info("Now you are bowling.")
+                  } else {
+                    setcurrent_info("Now you are batting.")
+                  }
                 }
-            }
-          }, 2000);
+                // Set showInningsBreak to false after 1.5 seconds
+                setTimeout(() => {
+                  setshowInningsBreak(false);
+                }, 2500);
+              }
+          }, 2100);
     }
   }, [player1Stopped, player2Stopped]);
 
@@ -390,6 +405,16 @@ const homePageCompleted = (data) =>{
                             </div>
             </div>
             }
+
+            {showInningsBreak && <div className="innings-break-container">
+                            <div className="innings-break-overlay">
+                                <InningsBreakDialog text="Second innings will start now" />
+                            </div>
+            </div>
+            }
+
+
+
             <div className="top-div">
                 <div  className="pg-label">
                     <ScoreShowLabel label={`Player1: ${player1Score.runs}/${player1Score.wickets}`}/>
@@ -404,7 +429,7 @@ const homePageCompleted = (data) =>{
                         <div className="first_innings_title">
                             <ul>
                                 <li>
-                                    {current_info}
+                                    <h2>{current_info}</h2>
                                 </li>
                             </ul>
                         </div>
