@@ -25,7 +25,7 @@ const Playground =() => {
     const player1_First_Innings = state.player1_1stInnings;
     const currentPlayer = state.players[socket.id].identity;
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
-    const [showInningsBreak, setshowInningsBreak] = useState(true);
+    const [showInningsBreak, setshowInningsBreak] = useState(false);
     const [showPlayer1Move, setshowPlayer1Move] = useState("Player1 move pending!!!");
     const [player1StoredValue, setplayer1StoredValue] = useState(0);
     const [player1Stopped, setplayer1Stopped] = useState(false);
