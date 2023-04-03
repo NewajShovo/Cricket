@@ -379,7 +379,7 @@ li {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px green;
   animation: rotateY 2.5s linear infinite;
 }
 
@@ -387,10 +387,20 @@ li {
   0% {
     transform: translate(-50%, -50%) rotateY(0deg);
   }
+  25% {
+    transform: translate(-50%, -50%) rotateY(-25deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotateY(0deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotateY(25deg);
+  }
   100% {
-    transform: translate(-50%, -50%) rotateY(360deg);
+    transform: translate(-50%, -50%) rotateY(0deg);
   }
 }
+
 
 .show-info {
   animation: fade-in 1s ease-out forwards;
