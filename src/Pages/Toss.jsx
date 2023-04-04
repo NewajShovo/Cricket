@@ -31,7 +31,6 @@ const Toss = () => {
       player1_1stInnings: player1Status,
       current_Socket_ID: socket.id
     };
-
     navigate("./Playground", { state: props });
   }
 
