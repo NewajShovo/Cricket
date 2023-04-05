@@ -434,23 +434,23 @@ const homePageCompleted = (data) =>{
                             </ul>
                         </div>
                         <div className="first_innings">
-                            <label style={{ color: 'white' }}>First Innings:</label>
+                            <label style={{ color: 'white', width:'120px', marginLeft:'5px' }}>First Innings:</label>
                             <label style={{ backgroundColor: 'white' }} id="1-1" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="1-2" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="1-3" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="1-4" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="1-5" className="score_label">?</label>
-                            <label style={{ backgroundColor: 'white' }} id="1-6" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white', marginRight:'5px' }} id="1-6" className="score_label">?</label>
                         </div>
 
                         <div className="second_innings">
-                            <label style={{ color: 'white' }}>Second Innings:</label>
+                            <label style={{ color: 'white', width:'120px', marginLeft:'5px' }}>Second Innings:</label>
                             <label style={{ backgroundColor: 'white' }} id="2-1" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="2-2" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="2-3" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="2-4" className="score_label">?</label>
                             <label style={{ backgroundColor: 'white' }} id="2-5" className="score_label">?</label>
-                            <label style={{ backgroundColor: 'white' }} id="2-6" className="score_label">?</label>
+                            <label style={{ backgroundColor: 'white', marginRight:'5px' }} id="2-6" className="score_label">?</label>
                         </div>
                     </div>
                     <div className="pitch">

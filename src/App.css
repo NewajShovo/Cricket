@@ -28,7 +28,7 @@ button {
 .top-div{
   width: 100%;
   height: 10%;
-  background-color: red;
+  background-color: green;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,12 +38,15 @@ button {
   margin-right: 10px;
   width: 150px;
   height: 50px;
-  background-color: green;
+  background-color: black;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+}
+.score-card{
+  color: white;
 }
 
 .main-playground{
@@ -66,7 +69,7 @@ button {
 }
 
 .player-label{
-  /* background-color: pink; */
+  color: white;
   text-align: center;
 }
 
@@ -129,12 +132,12 @@ li {
   background-color: #ccc;
   box-sizing: border-box;
   margin: auto;
-
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: rebeccapurple;
+  background-color: black;
+  border-radius: 5px;
 }
 .score_label {
   width: calc(100% / 8);
@@ -169,7 +172,8 @@ li {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: rebeccapurple;
+  background-color: black;
+  border-radius: 5px;
 }
 
 .pitch{
@@ -318,7 +322,7 @@ li {
   height:40px;
   width: 25%;
   border-radius: 5px;
-  background-color: green;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
