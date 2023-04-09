@@ -12,7 +12,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Toss/Playground" element={<Playground />} />
+          <Route
+            path="/:roomIDParam/Toss/Playground"
+            element={<Playground />}
+          />
           <Route path="/Toss" element={<Toss />} />
+          <Route path="/:roomIDParam/Toss" element={<Toss />} />
+          <Route path="/:roomIDParam" element={<Home />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

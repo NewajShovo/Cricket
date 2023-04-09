@@ -12,6 +12,7 @@ let players_score = {};
 function checkProbableDuplicacy(socket) {
   return uniquePlayer.includes(socket.id);
 }
+
 function handleCreateRoom(socket, data) {
   // Handle room creation logic
   if (checkProbableDuplicacy(socket)) {
@@ -58,6 +59,52 @@ function handleCreateRoom(socket, data) {
       uniquePlayer.push(socket.id);
       io.to(room.roomId).emit("room:created", room);
     }
+  }
+}
+
+function handleJoinRoom(socket, data) {
+  const index = rooms.findIndex(
+    (room) => room.vacant === true && room.roomId === data.roomIdentity
+  );
+  console.log(index);
+  if (index >= 0) {
+    const room = rooms[index];
+    console.log(room);
+    room.players[socket.id] = {
+      identity: data.identity,
+      option: null,
+      optionLock: false,
+      score: 0,
+    };
+    room.vacant = false;
+    room.roomFree = false;
+    console.log(room);
+    player_socketMap[socket.id] = room.roomId;
+    uniquePlayer.push(socket.id);
+    socket.join(room.roomId);
+    io.to(room.roomId).emit("room:completed", room);
+  } else {
+    console.log("Creating new room");
+    roomFree = false;
+    const room = {
+      roomId: data.roomIdentity,
+      players: {
+        [socket.id]: {
+          identity: data.identity,
+          option: null,
+          optionLock: false,
+          score: 0,
+        },
+      },
+      vacant: true,
+      roomFree: true,
+    };
+    player_socketMap[socket.id] = room.roomId;
+    console.log(room);
+    rooms.push(room);
+    socket.join(room.roomId);
+    uniquePlayer.push(socket.id);
+    io.to(room.roomId).emit("room:created", room);
   }
 }
 
@@ -160,6 +207,11 @@ io.on("connection", (socket) => {
   socket.on("room:create", (data) => {
     console.log("room:create....", data);
     handleCreateRoom(socket, data);
+  });
+
+  socket.on("join:room", (data) => {
+    console.log("join:room....", data);
+    handleJoinRoom(socket, data);
   });
 
   socket.on("try-again:initiated", (data) => {
