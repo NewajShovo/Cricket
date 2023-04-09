@@ -143,6 +143,7 @@ const Home =() => {
                 playWithFriends ? (
                     joinedViaLink?(
                         <div className="linkCreation-container">
+                            {loading && <div className="loader"></div>}
                             <Button className="join-button-link" label = <b>Ready to join</b>  onClick={handleButtonClick}/>
                         </div>
 
