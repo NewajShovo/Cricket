@@ -170,7 +170,7 @@ const Home =() => {
                 ) : (
                     <div className="button-container">
                     {loading && <div className="loader"></div>}
-                    <Button label="Play with Computer" onClick={handleButtonClick} disabled={true}/>
+                    <Button label="Play with Computer" onClick={handleButtonClick} disabled={false}/>
                     <Button label="Create link to play with friends" onClick={handleButtonClick} disabled={false}/>
                     <Button label="Play with Stranger" onClick={handleButtonClick} disabled={false}/>
                     </div>

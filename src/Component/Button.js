@@ -6,12 +6,17 @@ var savedProp;
 const createRoom = (data) => {
   console.log(data);
 
+  console.log(data.label);
+
   if (typeof data.label === "string") {
     if (data.label === "Copy") {
       console.log("Copying...");
       savedProp.onClick(data);
     } else if (data.label === "Create link to play with friends") {
       console.log("Play with friends button");
+      savedProp.onClick(data);
+    } else if (data.label === "Play with Computer") {
+      console.log("Play with Computer");
       savedProp.onClick(data);
     } else {
       console.log("Hello create room called", socket.id);

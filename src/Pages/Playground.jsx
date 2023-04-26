@@ -6,6 +6,7 @@ import { socket } from "../Component/Socket";
 import React, { useState, useEffect } from 'react';
 import GameOverDialog from "../Component/GameOver"
 import InningsBreakDialog from "../Component/InningsBreak"
+import playWithComputer from "../Component/ComputerOpponent";
 var previousPlayer1Score = {
     runs: 0, 
     wickets: 0
@@ -15,6 +16,7 @@ var previousPlayer2Score = {
     wickets: 0
 };
 var numberOfBall;
+var ballCounter = 0;
 
 const Playground =() => {
     const location = useLocation();
@@ -23,7 +25,13 @@ const Playground =() => {
     console.log("State", state);
     const currentSocketID = state.current_Socket_ID;
     const player1_First_Innings = state.player1_1stInnings;
-    const currentPlayer = state.players[socket.id].identity;
+    var currentPlayer;
+    if(state.players ==="Computer"){
+        currentPlayer = "player1";
+
+    }else{
+        currentPlayer = state.players[socket.id].identity;
+    }
     const [showGameOverDialog, setShowGameOverDialog] = useState(false);
     const [showInningsBreak, setshowInningsBreak] = useState(false);
     const [showPlayer1Move, setshowPlayer1Move] = useState("Player1 move pending!!!");
@@ -45,11 +53,12 @@ const Playground =() => {
 
 // Define functions to update the scores based on socket events
 const handleMoveCompleted = (data) => {
+  console.log("Move completed....");
   // Update the scores based on the game data
   console.log("COmpletedddddd!!!!!");
   console.log(data);
   numberOfBall = data.count;
-  console.log(numberOfBall);
+  console.log(numberOfBall, state.players);
   var keyValues = Object.keys(data.info);
   var player1_ID, player2_ID;
   if(data.info[keyValues[0]].playerType == "player1"){
@@ -209,13 +218,168 @@ const handleMoveCompleted = (data) => {
   }
 };
 
+const handleMoveCompletedForComputer = (data) => {
+    console.log("Hello boysss....", data);
+    var numberOfBall = data.count;
+    console.log(numberOfBall);
+    if(player1_First_Innings){
+        if(numberOfBall<=6){
+            const scoreId = `1-${numberOfBall}`;
+            if(playWithComputer.getcomputerMove()==playWithComputer.getplayer1Move()){
+                calculateRuns = previousPlayer1Score.runs;
+                calculateWkts = previousPlayer1Score.wickets + 1;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                  label.textContent = 'W';
+                }
+            }
+            else{
+                calculateRuns = previousPlayer1Score.runs + parseInt(playWithComputer.getplayer1Move());
+                calculateWkts = previousPlayer1Score.wickets;
+                const label = document.getElementById(scoreId);
+
+                console.log("Label: ", label, scoreId);
+                if (label) {
+                  label.textContent = playWithComputer.getplayer1Move();
+                }
+            }
+            const newScore = {
+                runs: calculateRuns,
+                wickets: calculateWkts
+            };
+            console.log(newScore);
+            previousPlayer1Score = newScore;
+            setPlayer1Score(newScore);
+        }else{
+            const scoreId = `2-${numberOfBall-6}`;
+            console.log(scoreId);
+            console.log("Second Half");
+            var calculateRuns = 0, calculateWkts = 0;
+            console.log("Previous: ", player2Score.runs, player2Score.wickets);
+            if(playWithComputer.getcomputerMove()==playWithComputer.getplayer1Move()){
+                calculateRuns = previousPlayer2Score.runs;
+                calculateWkts = previousPlayer2Score.wickets + 1;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                label.textContent = 'W';
+                }
+            }
+            else{
+                calculateRuns = previousPlayer2Score.runs + parseInt(playWithComputer.getcomputerMove());
+                calculateWkts = previousPlayer2Score.wickets;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                label.textContent = playWithComputer.getcomputerMove();
+                }
+            }
+            const newScore = {
+                runs: calculateRuns,
+                wickets: calculateWkts
+            };
+            previousPlayer2Score = newScore;
+            setPlayer2Score(newScore);
+            if(numberOfBall===12||calculateRuns>previousPlayer2Score.runs){
+                const data = {};
+                handleGameOver(data);
+            }
+        }
+    }else{
+        if(numberOfBall<=6){
+            const scoreId = `2-${numberOfBall}`;
+            console.log(scoreId);
+            console.log("Second Half");
+            var calculateRuns = 0, calculateWkts = 0;
+            console.log("Previous: ", player2Score.runs, player2Score.wickets);
+            if(playWithComputer.getcomputerMove()==playWithComputer.getplayer1Move()){
+                calculateRuns = previousPlayer2Score.runs;
+                calculateWkts = previousPlayer2Score.wickets + 1;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                label.textContent = 'W';
+                }
+            }
+            else{
+                calculateRuns = previousPlayer2Score.runs + parseInt(playWithComputer.getcomputerMove());
+                calculateWkts = previousPlayer2Score.wickets;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                label.textContent = playWithComputer.getcomputerMove();
+                }
+            }
+            const newScore = {
+                runs: calculateRuns,
+                wickets: calculateWkts
+            };
+            previousPlayer2Score = newScore;
+            setPlayer2Score(newScore);
+        }else{
+            const scoreId = `1-${numberOfBall-6}`;
+            if(playWithComputer.getcomputerMove()==playWithComputer.getplayer1Move()){
+                calculateRuns = previousPlayer1Score.runs;
+                calculateWkts = previousPlayer1Score.wickets + 1;
+                const label = document.getElementById(scoreId);
+                if (label) {
+                  label.textContent = 'W';
+                }
+            }
+            else{
+                calculateRuns = previousPlayer1Score.runs + parseInt(playWithComputer.getplayer1Move());
+                calculateWkts = previousPlayer1Score.wickets;
+                const label = document.getElementById(scoreId);
+
+                console.log("Label: ", label, scoreId);
+                if (label) {
+                  label.textContent = playWithComputer.getplayer1Move();
+                }
+            }
+            const newScore = {
+                runs: calculateRuns,
+                wickets: calculateWkts
+            };
+            console.log(newScore);
+            previousPlayer1Score = newScore;
+            setPlayer1Score(newScore);
+        }
+        if(numberOfBall===12||calculateRuns>previousPlayer2Score.runs){
+            const data = {};
+            handleGameOver(data);
+        }
+    }
+}
+
+
+
 const handleRunClick = (data) => {
+    console.log("Run button click....");
+    console.log("Data: ", data);
     const btnId = data.id;
     const player = btnId.split("-")[0]; // extracts "player1"
     if(player==="player1"){
         setplayer1RunButtonDisable(true);
+        playWithComputer.setplayer1Move(data.label);
     }else{
         setplayer2RunButtonDisable(true);
+    }
+
+    if(state.players=="Computer"){
+        numberOfBall = playWithComputer.getnumberOfDeliveries();
+        // console.log("Abcdefgh: ", parseInt(numberOfBall));
+        console.log(numberOfBall);
+        updateScore(data);
+        setTimeout(() => {
+            let data = {};
+            let random_number = Math.floor(Math.random() * 6) + 1;
+            random_number = random_number.toString();
+            console.log(random_number);
+            data.label = random_number;
+            console.log("Run: ", random_number);
+            data.id = "player2-btn" + random_number;
+            data.count = numberOfBall;
+            playWithComputer.setcomputerMove(random_number);
+            updateScore(data);
+            handleMoveCompletedForComputer(data);
+          }, 1500);
+
     }
   };
 
@@ -279,11 +443,20 @@ const homePageCompleted = (data) =>{
 }
 
  const updateScore = (data) =>{
+    var buttonId, runString;
+    console.log("HELLO", data);
     console.log("Score Updatedfasdfas",data);
-    var buttonId = data.scoreID;
-    var runString = data.scoreLabel;
-    buttonId = buttonId.replace(/btn[1-9]/, "move");
-    console.log(buttonId);
+    if(state.players === "Computer"){
+        runString = data.label;
+        buttonId = data.id;
+        buttonId = buttonId.replace(/btn[1-9]/, "move");
+
+    }else{
+        buttonId = data.scoreID;
+        runString = data.scoreLabel;
+        buttonId = buttonId.replace(/btn[1-9]/, "move");
+    }
+    console.log(buttonId, runString);
     const moveDiv = document.querySelector("."+buttonId);
     if(buttonId === "player1-move"){
         setshowPlayer1Move("Player 1 move completed!!");
@@ -306,9 +479,9 @@ const homePageCompleted = (data) =>{
 
         var currentDiv = document.querySelector(".player2-move");
         currentDiv.style.display = "none";
-        console.log("Number of ball: ",numberOfBall);
         if(player1StoredValue===player2StoredValue){
             setshowFinalScore("Bowler gets a wicket!!!!");
+            playWithComputer.setnumberOfDeliveries(playWithComputer.getnumberOfDeliveries()+1);
         }else{
             if(player1_First_Innings){
                 if(numberOfBall<=6){
@@ -316,16 +489,16 @@ const homePageCompleted = (data) =>{
                 }else{
                     setshowFinalScore(player2StoredValue);
                 }
+                playWithComputer.setnumberOfDeliveries(playWithComputer.getnumberOfDeliveries()+1);
             }else{
                 if(numberOfBall<=6){
                     setshowFinalScore(player2StoredValue);
                 }else{
                     setshowFinalScore(player1StoredValue);
                 }
+                playWithComputer.setnumberOfDeliveries(playWithComputer.getnumberOfDeliveries()+1);
             }
         }
-
-
 
         currentDiv = document.querySelector(".player3-move");
         currentDiv.style.display = "flex"; // or any other visible display value
@@ -344,6 +517,9 @@ const homePageCompleted = (data) =>{
             setshowPlayer2Move("Player2 move pending!!!");
             setplayer1RunButtonDisable(false);
             setplayer2RunButtonDisable(false);
+
+
+            console.log("HELLLLLLLLLLLOOOOOOOO",currentPlayer, player1_First_Innings);
             if(numberOfBall == 6) {
                 setshowInningsBreak(true);
                 if(player1_First_Innings) {
@@ -370,6 +546,8 @@ const homePageCompleted = (data) =>{
 
 
     useEffect(() => {
+
+
         if(player1_First_Innings){
             if(currentPlayer === "player1"){
                 setcurrent_info("Now you are batting.")

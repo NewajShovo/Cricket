@@ -5,20 +5,33 @@ import { useState, useEffect } from 'react';
 import { socket } from "../Component/Socket";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import GlobalComponent from '../Component/GlobalComponent';
 const Toss = () => {
+  var currentPlayer;
   const [player1Status, setplayer1Status] = useState(true);
   const location = useLocation();
   const navigate= useNavigate();
   const { state } = location;
-  const currentPlayer = state.players[socket.id].identity;
+  console.log(state);
+  if(state){
+    currentPlayer = state.players[socket.id].identity;
+  }else{
+    currentPlayer = "player1";
+  }
   console.log("Herrrreee.........",currentPlayer);
   const [isLoading, setIsLoading] = useState(true);
   const makeToss =() => {
     console.log("One Tosss");
     const tossResult = Math.floor(Math.random() * 10) + 1;
     console.log(tossResult);
-    if(tossResult%2===1)  setplayer1Status(true);
-    else setplayer1Status(false);
+    if(tossResult%2===1)  {
+      GlobalComponent.setTossResult(true);
+      setplayer1Status(true);
+    }
+    else {
+      GlobalComponent.setTossResult(false);
+      setplayer1Status(false);
+    }
     console.log(player1Status,currentPlayer);
   }
 
@@ -26,11 +39,20 @@ const Toss = () => {
 
   const redirectToPlayground=()=>{
     console.log("HERE", player1Status);
-    const props = {
-      players:  state.players,
-      player1_1stInnings: player1Status,
-      current_Socket_ID: socket.id
-    };
+    var props;
+    if(state){
+      props = {
+        players:  state.players,
+        player1_1stInnings: GlobalComponent.getTossResult(),
+        current_Socket_ID: socket.id
+      };
+    }else{
+      props = {
+        players:  "Computer",
+        player1_1stInnings: GlobalComponent.getTossResult(),
+        current_Socket_ID: socket.id
+      };
+    }
     navigate("./Playground", { state: props });
   }
 
@@ -43,7 +65,7 @@ const Toss = () => {
       redirectToPlayground();
     }, 6000);
 
-  }, []);
+  }, [player1Status]);
 
   return (
     <div className="toss-page">
