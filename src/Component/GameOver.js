@@ -2,9 +2,13 @@ import React from "react";
 const GameOver = (props) => {
   const handleClick = (buttonID) => {
     console.log(buttonID);
+    console.log("I am here....");
+
     if (buttonID === "home") {
+      console.log("Hello");
       props.onButtonClicked(buttonID);
     } else {
+      console.log("HELLO");
       props.onButtonClicked(buttonID);
     }
   };

@@ -393,15 +393,25 @@ const handleGameOver = (data) => {
 
 const handleButtonClick = (props) => {
     if(props==="try-again"){
-
-        socket.emit("try-again:initiated", {
-            socketId: socket.id,
-        });
+        if(state.players ==="Computer"){
+            tryAgainCompleted();
+        }
+        else{
+            socket.emit("try-again:initiated", {
+                socketId: socket.id,
+            });
+        }
     }
     else{
-        socket.emit("home-page:initiated", {
-            socketId: socket.id,
-        });
+
+        if(state.players ==="Computer"){
+            homePageCompleted();
+        }
+        else{
+            socket.emit("home-page:initiated", {
+                socketId: socket.id,
+            });
+        }
     }
 };
 
@@ -436,6 +446,9 @@ const tryAgainCompleted = (data) =>{
         }else{
             setcurrent_info("Now you are bowling.")
         }
+    }
+    if(state.players ==="Computer"){
+        playWithComputer.resetState();
     }
 }
 const homePageCompleted = (data) =>{
